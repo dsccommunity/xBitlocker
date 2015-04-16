@@ -1,7 +1,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/wi5i60tojfd7056b/branch/master?svg=true)](https://ci.appveyor.com/project/PowerShell/xbitlocker/branch/master)
 
 # xBitlocker
-The** xBitlocker** module is a part of the Windows PowerShell Desired State Configuration (DSC) Resource Kit, which is a collection of DSC Resources produced by the PowerShell Team.
+The **xBitlocker** module is a part of the Windows PowerShell Desired State Configuration (DSC) Resource Kit, which is a collection of DSC Resources produced by the PowerShell Team.
 This module contains the **xBLAutoBitlocker, xBLBitlocker, xBLTpm** resources.
 This DSC Module allows you to configure Bitlocker on a single disk, configure a TPM chip, or automatically enable Bitlocker on multiple disks.
 
