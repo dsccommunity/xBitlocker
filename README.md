@@ -13,11 +13,11 @@ Please check out common DSC Resources [contributing guidelines](https://github.c
 
 To install **xBitlocker** module
 
-*   Unzip the content under $env:ProgramFiles\WindowsPowerShell\Modules folder
+* Unzip the content under $env:ProgramFiles\WindowsPowerShell\Modules folder
 
 To confirm installation:  
 
-*   Run **Get-DSCResource** to see that **xBLAutoBitlocker, xBLBitlocker, xBLTpm** are among the DSC Resources listed  
+* Run **Get-DSCResource** to see that **xBLAutoBitlocker, xBLBitlocker, xBLTpm** are among the DSC Resources listed  
 
 ## Requirements
 
