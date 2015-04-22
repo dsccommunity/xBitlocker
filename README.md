@@ -5,12 +5,6 @@ The **xBitlocker** module is a part of the Windows PowerShell Desired State Conf
 This module contains the **xBLAutoBitlocker, xBLBitlocker, xBLTpm** resources.
 This DSC Module allows you to configure Bitlocker on a single disk, configure a TPM chip, or automatically enable Bitlocker on multiple disks.
 
-**All of the resources in the DSC Resource Kit are provided AS IS, and are not supported through any Microsoft standard support program or service.
-The ""x" in xBitlocker stands for experimental**, which means that these resources will be **fix forward** and monitored by the module owner(s).
-
-If you would like to modify **xBitlocker** module, feel free.
-When modifying, please update the module name, resource friendly name, and MOF class name (instructions below).
-As specified in the license, you may copy or modify this resource as long as they are used on the Windows Platform.
 
 ## Contributing
 Please check out common DSC Resources [contributing guidelines](https://github.com/PowerShell/DscResource.Kit/blob/master/CONTRIBUTING.md).
