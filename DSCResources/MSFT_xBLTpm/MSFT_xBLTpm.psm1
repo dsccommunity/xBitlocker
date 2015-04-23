@@ -19,7 +19,6 @@ function Get-TargetResource
     {
         $returnValue = @{
             Identity = $Identity
-            TpmReady = $tpm.TpmReady
         }
     }
 
@@ -59,17 +58,14 @@ function Set-TargetResource
     {
         if ($tpm.RestartRequired -eq $true)
         {
+            $global:DSCMachineStatus = 1
+
             if ($AllowImmediateReboot -eq $true)
             {
-                Write-Verbose "Forcing an immediate reboot of the computer"
+                Write-Verbose "Forcing an immediate reboot of the computer in 30 seconds"
 
+                Start-Sleep -Seconds 30
                 Restart-Computer -Force
-            }
-            else
-            {
-                Write-Verbose "Setting DSCMachineStatus to 1"
-
-                $global:DSCMachineStatus = 1
             }
         }
     }
@@ -118,6 +114,5 @@ function Test-TargetResource
 
 
 Export-ModuleMember -Function *-TargetResource
-
 
 

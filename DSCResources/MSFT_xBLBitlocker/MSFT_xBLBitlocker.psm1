@@ -8,7 +8,7 @@ function Get-TargetResource
         [System.String]
         $MountPoint,
 
-        [ValidateSet("AdAccountOrGroupProtector","PasswordProtector","Pin","RecoveryKeyProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
+        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
         [parameter(Mandatory = $true)]
         [System.String]
         $PrimaryProtector,
@@ -73,18 +73,10 @@ function Get-TargetResource
 
     CheckForPreReqs
 
-    $blv = Get-BitLockerVolume -MountPoint $MountPoint -ErrorAction SilentlyContinue
-
-    if ($blv -ne $null)
-    {
-        $returnValue = @{
-            MountPoint = $MountPoint
-            VolumeStatus = $blv.VolumeStatus
-            KeyProtectors = $blv.KeyProtector
-            EncryptionMethod = $blv.EncryptionMethod
-        }
+    $returnValue = @{
+        MountPoint = $MountPoint
     }
-
+    
     $returnValue
 }
 
@@ -98,7 +90,7 @@ function Set-TargetResource
         [System.String]
         $MountPoint,
 
-        [ValidateSet("AdAccountOrGroupProtector","PasswordProtector","Pin","RecoveryKeyProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
+        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
         [parameter(Mandatory = $true)]
         [System.String]
         $PrimaryProtector,
@@ -176,7 +168,7 @@ function Test-TargetResource
         [System.String]
         $MountPoint,
 
-        [ValidateSet("AdAccountOrGroupProtector","PasswordProtector","Pin","RecoveryKeyProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
+        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
         [parameter(Mandatory = $true)]
         [System.String]
         $PrimaryProtector,
@@ -247,6 +239,5 @@ function Test-TargetResource
 }
 
 Export-ModuleMember -Function *-TargetResource
-
 
 

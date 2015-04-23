@@ -1,4 +1,10 @@
 $showVerbose = $true
+$showValidSettings -eq $true
+
+if ($pin -eq $null)
+{
+    $pin = Get-Credential -Message "Enter the Bitlocker Pin in the password field"
+}
 
 #Define the parameters that can be passed into individual tests
 $blParams1 = @{
@@ -7,8 +13,84 @@ $blParams1 = @{
     StartupKeyProtector = $true
     StartupKeyPath = "A:"
     RecoveryPasswordProtector = $true
-    AllowImmediateReboot = $false
     UsedSpaceOnly = $true
+}
+
+$blParams2 = @{
+    MountPoint = "C:"
+    PrimaryProtector = "StartupKeyProtector"
+    StartupKeyProtector = $true
+    StartupKeyPath = "A:"
+    RecoveryPasswordProtector = $true
+    UsedSpaceOnly = $true
+}
+
+$blParams3 = @{
+    MountPoint                = 'C:'
+    PrimaryProtector          = 'TpmProtector'
+    RecoveryPasswordProtector = $true
+    TpmProtector              = $true
+    UsedSpaceOnly             = $true
+}
+
+$blParams4 = @{
+    MountPoint                = 'C:'
+    PrimaryProtector          = 'TpmProtector'
+    Pin = $pin
+    TpmProtector              = $true
+    UsedSpaceOnly             = $true
+}
+
+$blParams5 = @{
+    MountPoint                = 'C:'
+    PrimaryProtector          = 'TpmProtector'
+    StartupKeyProtector = $true
+    StartupKeyPath = "E:"
+    TpmProtector              = $true
+    UsedSpaceOnly             = $true
+}
+
+$blParams6 = @{
+    MountPoint                = 'C:'
+    PrimaryProtector          = 'TpmProtector'
+    StartupKeyProtector = $true
+    StartupKeyPath = "E:"
+    Pin = $pin
+    TpmProtector              = $true
+    UsedSpaceOnly             = $true
+}
+
+$blParams7 = @{
+    MountPoint                = 'C:'
+    PrimaryProtector          = 'StartupKeyProtector'
+    AdAccountOrGroupProtector = $true
+    AdAccountOrGroup          = "mikelab.local\ucctest"
+    StartupKeyProtector       = $true
+    StartupKeyPath            = 'A:'
+    RecoveryPasswordProtector = $true
+    UsedSpaceOnly             = $true
+}
+
+$blParams8 = @{
+    MountPoint                = 'C:'
+    PrimaryProtector          = 'RecoveryPasswordProtector'
+    AdAccountOrGroupProtector = $true
+    AdAccountOrGroup          = "mikelab.local\ucctest"
+    StartupKeyProtector       = $true
+    StartupKeyPath            = 'A:'
+    RecoveryPasswordProtector = $true
+    UsedSpaceOnly             = $true
+}
+
+$blParams9 = @{
+    MountPoint                = 'C:'
+    PrimaryProtector          = 'PasswordProtector'
+    StartupKeyProtector       = $true
+    StartupKeyPath            = 'A:'
+    PasswordProtector         = $true
+    Password                  = $pin
+    RecoveryPasswordProtector = $true
+    UsedSpaceOnly             = $true
 }
 
 $autoBlParams1 = @{
@@ -17,6 +99,19 @@ $autoBlParams1 = @{
     PrimaryProtector = "RecoveryPasswordProtector"
     RecoveryPasswordProtector = $true
     UsedSpaceOnly = $true
+}
+
+function DisableBitlocker
+{
+    $blv = Get-BitLockerVolume
+
+    foreach ($v in $blv)
+    {
+        if ($v.KeyProtector -ne $null -and $v.KeyProtector.Count -gt 0)
+        {
+            $v | Disable-BitLocker | Out-Null
+        }
+    }
 }
 
 #Compares two values and reports whether they are the same or not
@@ -47,6 +142,10 @@ function RunTest
         Import-Module $modulePath
     }
 
+    DisableBitlocker
+
+    Write-Verbose "Beginning test '$($TestName)'"
+
     if ($showVerbose -eq $true)
     {
         Set-TargetResource @Parameters -Verbose
@@ -59,7 +158,7 @@ function RunTest
     }
     else
     {
-        #Set-TargetResource @Parameters
+        Set-TargetResource @Parameters
 
         $getResult = Get-TargetResource @Parameters
         checkSetting -testName "$($TestName): Get" -expectedValue $true -actualValue ($getResult -ne $null)
@@ -82,13 +181,21 @@ function RunTests
 
     if ("TestBitlocker" -like $Filter)
     {
-        RunTest -TestName "TestBitlocker1" -ModulesToImport "MSFT_xBitlocker" -Parameters $blParams1
+        RunTest -TestName "TestBitlocker1" -ModulesToImport "MSFT_xBLBitlocker" -Parameters $blParams1
+        RunTest -TestName "TestBitlocker2" -ModulesToImport "MSFT_xBLBitlocker" -Parameters $blParams2
+        #RunTest -TestName "TestBitlocker3" -ModulesToImport "MSFT_xBLBitlocker" -Parameters $blParams3
+        #RunTest -TestName "TestBitlocker4" -ModulesToImport "MSFT_xBLBitlocker" -Parameters $blParams4
+        #RunTest -TestName "TestBitlocker5" -ModulesToImport "MSFT_xBLBitlocker" -Parameters $blParams5
+        #RunTest -TestName "TestBitlocker6" -ModulesToImport "MSFT_xBLBitlocker" -Parameters $blParams6
+        RunTest -TestName "TestBitlocker7" -ModulesToImport "MSFT_xBLBitlocker" -Parameters $blParams7
+        RunTest -TestName "TestBitlocker8" -ModulesToImport "MSFT_xBLBitlocker" -Parameters $blParams8
+        RunTest -TestName "TestBitlocker9" -ModulesToImport "MSFT_xBLBitlocker" -Parameters $blParams9
     }
 
     if ("TestAutoBitlocker" -like $Filter)
     {
-        RunTest -TestName "TestAutoBitlocker1" -ModulesToImport "MSFT_xAutoBitlocker" -Parameters $autoBlParams1
+        RunTest -TestName "TestAutoBitlocker1" -ModulesToImport "MSFT_xBLAutoBitlocker" -Parameters $autoBlParams1
     }
 }
 
-RunTests -Filter "TestAutoBitlocker*"
+RunTests -Filter "TestBitlocker*"

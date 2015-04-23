@@ -5,12 +5,6 @@ The **xBitlocker** module is a part of the Windows PowerShell Desired State Conf
 This module contains the **xBLAutoBitlocker, xBLBitlocker, xBLTpm** resources.
 This DSC Module allows you to configure Bitlocker on a single disk, configure a TPM chip, or automatically enable Bitlocker on multiple disks.
 
-**All of the resources in the DSC Resource Kit are provided AS IS, and are not supported through any Microsoft standard support program or service.
-The ""x" in xBitlocker stands for experimental**, which means that these resources will be **fix forward** and monitored by the module owner(s).
-
-If you would like to modify **xBitlocker** module, feel free.
-When modifying, please update the module name, resource friendly name, and MOF class name (instructions below).
-As specified in the license, you may copy or modify this resource as long as they are used on the Windows Platform.
 
 ## Contributing
 Please check out common DSC Resources [contributing guidelines](https://github.com/PowerShell/DscResource.Kit/blob/master/CONTRIBUTING.md).
@@ -19,11 +13,11 @@ Please check out common DSC Resources [contributing guidelines](https://github.c
 
 To install **xBitlocker** module
 
-*   Unzip the content under $env:ProgramFiles\WindowsPowerShell\Modules folder
+* Unzip the content under $env:ProgramFiles\WindowsPowerShell\Modules folder
 
 To confirm installation:  
 
-*   Run **Get-DSCResource** to see that **xBLAutoBitlocker, xBLBitlocker, xBLTpm** are among the DSC Resources listed  
+* Run **Get-DSCResource** to see that **xBLAutoBitlocker, xBLBitlocker, xBLTpm** are among the DSC Resources listed  
 
 ## Requirements
 
@@ -104,7 +98,14 @@ Defaults to false.
 
 ## Versions
 
-1.0.0.0
+### 1.0.1.1
+
+* Reduced the number of acceptable values for PrimaryProtector in xBLAutoBitlocker and xBLBitlocker.
+* Changed the properties that are returned by Get-TargetResource in xBLAutoBitlocker, xBLBitlocker, and xBLTpm.
+* Fixed issue which caused protectors to be continually re-added.
+
+
+### 1.0.0.0
 
 *   Initial release with the following resources 
     *   xBLAutoBitlocker 
