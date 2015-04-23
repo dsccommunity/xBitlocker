@@ -9,4 +9,3 @@ class MSFT_xBLTpm : OMI_BaseResource
 };
 
 
-

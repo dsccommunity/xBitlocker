@@ -98,7 +98,14 @@ Defaults to false.
 
 ## Versions
 
-1.0.0.0
+### 1.0.1.1
+
+* Reduced the number of acceptable values for PrimaryProtector in xBLAutoBitlocker and xBLBitlocker.
+* Changed the properties that are returned by Get-TargetResource in xBLAutoBitlocker, xBLBitlocker, and xBLTpm.
+* Fixed issue which caused protectors to be continually re-added.
+
+
+### 1.0.0.0
 
 *   Initial release with the following resources 
     *   xBLAutoBitlocker 

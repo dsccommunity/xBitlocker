@@ -12,7 +12,7 @@
 # RootModule = ''
 
 # Version number of this module.
-ModuleVersion = '1.0.0.0'
+ModuleVersion = '1.0.1.1'
 
 # ID used to uniquely identify this module
 GUID = 'dc4f3fd0-4e1d-4916-84f8-d0bb89d52507'
@@ -93,6 +93,5 @@ AliasesToExport = '*'
 # DefaultCommandPrefix = ''
 
 }
-
 
 

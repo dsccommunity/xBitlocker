@@ -12,7 +12,7 @@ function Get-TargetResource
         [System.Int32]
         $MinDiskCapacityGB,
 
-        [ValidateSet("AdAccountOrGroupProtector","PasswordProtector","Pin","RecoveryKeyProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
+        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
         [parameter(Mandatory = $true)]
         [System.String]
         $PrimaryProtector,
@@ -74,36 +74,8 @@ function Get-TargetResource
 
     CheckForPreReqs
 
-    #First get all Bitlocker Volumes of type Data
-    $allBlvs = Get-BitLockerVolume | where {$_.VolumeType -eq "Data"}
-
-    #Filter on size if it was specified
-    if ($PSBoundParameters.ContainsKey("MinDiskCapacityGB"))
-    {
-        $allBlvs = $allBlvs | where {$_.CapacityGB -ge $MinDiskCapacityGB}
-    }
-
-    #Now find disks of the appropriate drive type, and add them to the collection
-    if ($allBlvs -ne $null)
-    {
-        [Hashtable]$returnValue = @{}
-
-        foreach ($blv in $allBlvs)
-        {
-            $vol = $null
-            $vol = Get-Volume -Path $blv.MountPoint -ErrorAction SilentlyContinue | where {$_.DriveType -like $DriveType}
-
-            if ($vol -ne $null)
-            {
-                [Hashtable]$props = @{
-                    VolumeStatus = $blv.VolumeStatus
-                    KeyProtectors = $blv.KeyProtector
-                    EncryptionMethod = $blv.EncryptionMethod
-                }
-
-                $returnValue.Add($blv.MountPoint, $props)
-            }
-        }
+    $returnValue = @{
+        DriveType = $DriveType
     }
 
     $returnValue
@@ -122,7 +94,7 @@ function Set-TargetResource
         [System.Int32]
         $MinDiskCapacityGB,
 
-        [ValidateSet("AdAccountOrGroupProtector","PasswordProtector","Pin","RecoveryKeyProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
+        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
         [parameter(Mandatory = $true)]
         [System.String]
         $PrimaryProtector,
@@ -184,7 +156,7 @@ function Set-TargetResource
 
     CheckForPreReqs
 
-    $autoBlVols = Get-TargetResource @PSBoundParameters
+    $autoBlVols = GetAutoBitlockerStatus @PSBoundParameters
 
     if ($autoBlVols -eq $null)
     {
@@ -210,7 +182,6 @@ function Set-TargetResource
     }
 }
 
-
 function Test-TargetResource
 {
     [CmdletBinding()]
@@ -225,7 +196,7 @@ function Test-TargetResource
         [System.Int32]
         $MinDiskCapacityGB,
 
-        [ValidateSet("AdAccountOrGroupProtector","PasswordProtector","Pin","RecoveryKeyProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
+        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
         [parameter(Mandatory = $true)]
         [System.String]
         $PrimaryProtector,
@@ -287,7 +258,7 @@ function Test-TargetResource
 
     CheckForPreReqs
 
-    $autoBlVols = Get-TargetResource @PSBoundParameters
+    $autoBlVols = GetAutoBitlockerStatus @PSBoundParameters
 
     if ($autoBlVols -eq $null)
     {
@@ -315,8 +286,113 @@ function Test-TargetResource
     return $true
 }
 
+function GetAutoBitlockerStatus
+{
+    [CmdletBinding()]
+    [OutputType([System.Collections.Hashtable])]
+    param
+    (
+        [parameter(Mandatory = $true)]
+        [ValidateSet("Fixed","Removable")]
+        [System.String]
+        $DriveType,
+
+        [System.Int32]
+        $MinDiskCapacityGB,
+
+        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
+        [parameter(Mandatory = $true)]
+        [System.String]
+        $PrimaryProtector,
+
+        [System.String]
+        $AdAccountOrGroup,
+
+        [System.Boolean]
+        $AdAccountOrGroupProtector,
+
+        [System.Boolean]
+        $AutoUnlock = $false,
+
+        [ValidateSet("Aes128","Aes256")]
+        [System.String]
+        $EncryptionMethod,
+
+        [System.Boolean]
+        $HardwareEncryption,
+
+        [System.Management.Automation.PSCredential]
+        $Password,
+
+        [System.Boolean]
+        $PasswordProtector,
+
+        [System.Management.Automation.PSCredential]
+        $Pin,
+
+        [System.String]
+        $RecoveryKeyPath,
+
+        [System.Boolean]
+        $RecoveryKeyProtector,
+
+        [System.Boolean]
+        $RecoveryPasswordProtector,
+
+        [System.Boolean]
+        $Service,
+
+        [System.Boolean]
+        $SkipHardwareTest,
+
+        [System.String]
+        $StartupKeyPath,
+
+        [System.Boolean]
+        $StartupKeyProtector,
+
+        [System.Boolean]
+        $TpmProtector,
+
+        [System.Boolean]
+        $UsedSpaceOnly
+    )
+
+    #First get all Bitlocker Volumes of type Data
+    $allBlvs = Get-BitLockerVolume | where {$_.VolumeType -eq "Data"}
+
+    #Filter on size if it was specified
+    if ($PSBoundParameters.ContainsKey("MinDiskCapacityGB"))
+    {
+        $allBlvs = $allBlvs | where {$_.CapacityGB -ge $MinDiskCapacityGB}
+    }
+
+    #Now find disks of the appropriate drive type, and add them to the collection
+    if ($allBlvs -ne $null)
+    {
+        [Hashtable]$returnValue = @{}
+
+        foreach ($blv in $allBlvs)
+        {
+            $vol = $null
+            $vol = Get-Volume -Path $blv.MountPoint -ErrorAction SilentlyContinue | where {$_.DriveType -like $DriveType}
+
+            if ($vol -ne $null)
+            {
+                [Hashtable]$props = @{
+                    VolumeStatus = $blv.VolumeStatus
+                    KeyProtectors = $blv.KeyProtector
+                    EncryptionMethod = $blv.EncryptionMethod
+                }
+
+                $returnValue.Add($blv.MountPoint, $props)
+            }
+        }
+    }
+
+    $returnValue
+}
 
 Export-ModuleMember -Function *-TargetResource
-
 
 

@@ -6,7 +6,7 @@ class MSFT_xBLAutoBitlocker : OMI_BaseResource
 
     [Key, ValueMap{"Fixed","Removable"}, Values{"Fixed","Removable"}] String DriveType; //The type of volume, as reported by Get-Volume, to auto apply Bitlocker to
     [Write] Sint32 MinDiskCapacityGB; //If specified, only disks this size or greater will auto apply Bitlocker
-    [Required, ValueMap{"AdAccountOrGroupProtector","PasswordProtector","Pin","RecoveryKeyProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector"}, Values{"AdAccountOrGroupProtector","PasswordProtector","Pin","RecoveryKeyProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector"}] String PrimaryProtector;
+    [Required, ValueMap{"PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector"}, Values{"PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector"}] String PrimaryProtector;
     [Write] Boolean AutoUnlock; //Whether volumes should be enabled for auto unlock using Enable-BitlockerAutoUnlock
 
     //Remaing properties correspond directly to Enable-Bitlocker parameters
@@ -28,6 +28,5 @@ class MSFT_xBLAutoBitlocker : OMI_BaseResource
     [Write] Boolean TpmProtector;
     [Write] Boolean UsedSpaceOnly;
 };
-
 
 

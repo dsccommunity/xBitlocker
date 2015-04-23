@@ -3,7 +3,7 @@
 class MSFT_xBLBitlocker : OMI_BaseResource
 {
     [Key] String MountPoint; //The MountPoint name as reported in Get-BitLockerVolume
-    [Required, ValueMap{"AdAccountOrGroupProtector","PasswordProtector","Pin","RecoveryKeyProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector"}, Values{"AdAccountOrGroupProtector","PasswordProtector","Pin","RecoveryKeyProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector"}] String PrimaryProtector; //The type of key protector that will be used as the primary key protector
+    [Required, ValueMap{"PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector"}, Values{"PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector"}] String PrimaryProtector; //The type of key protector that will be used as the primary key protector
     [Write] Boolean AutoUnlock; //Whether volumes should be enabled for auto unlock using Enable-BitlockerAutoUnlock
     [Write] Boolean AllowImmediateReboot; //Whether the computer can be immediately rebooted after enabling Bitlocker on an OS drive. Defaults to false.
 
@@ -26,6 +26,5 @@ class MSFT_xBLBitlocker : OMI_BaseResource
     [Write] Boolean TpmProtector;
     [Write] Boolean UsedSpaceOnly;
 };
-
 
 
