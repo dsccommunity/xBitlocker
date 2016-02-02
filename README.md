@@ -102,6 +102,8 @@ Defaults to false.
 
 ### 1.1.0.0
 
+* Versioning updates
+
 ### 1.0.1.1
 
 * Reduced the number of acceptable values for PrimaryProtector in xBLAutoBitlocker and xBLBitlocker.
