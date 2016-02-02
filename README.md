@@ -100,6 +100,8 @@ Defaults to false.
 
 ### Unreleased
 
+### 1.1.0.0
+
 ### 1.0.1.1
 
 * Reduced the number of acceptable values for PrimaryProtector in xBLAutoBitlocker and xBLBitlocker.
