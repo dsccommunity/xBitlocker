@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/wi5i60tojfd7056b/branch/master?svg=true)](https://ci.appveyor.com/project/PowerShell/xbitlocker/branch/master)
+﻿[![Build status](https://ci.appveyor.com/api/projects/status/wi5i60tojfd7056b/branch/master?svg=true)](https://ci.appveyor.com/project/PowerShell/xbitlocker/branch/master)
 
 # xBitlocker
 The **xBitlocker** module is a part of the Windows PowerShell Desired State Configuration (DSC) Resource Kit, which is a collection of DSC Resources produced by the PowerShell Team.
@@ -102,7 +102,6 @@ Defaults to false.
 
 ### Unreleased
 * Converted appveyor.yml to install Pester from PSGallery instead of from Chocolatey.
-* Updated appveyor.yml to use the default image.
 
 ### 1.1.0.0
 
