@@ -101,6 +101,8 @@ Defaults to false.
 ## Versions
 
 ### Unreleased
+* Converted appveyor.yml to install Pester from PSGallery instead of from Chocolatey.
+* Updated appveyor.yml to use the default image.
 
 ### 1.1.0.0
 
