@@ -134,6 +134,8 @@ Defaults to false.
 * Fixed issue which caused Test to incorrectly succeed on fully decrypted volumes when correct Key Protectors were present ([issue #13](https://github.com/PowerShell/xBitlocker/issues/13))
 * Fixed issue which caused xBLAutoBitlocker to incorrectly detect Fixed vs Removable volumes. ([issue #11](https://github.com/PowerShell/xBitlocker/issues/11))
 * Fixed issue which made xBLAutoBitlocker unable to encrypt volumes with drive letters assigned. ([issue #10](https://github.com/PowerShell/xBitlocker/issues/10))
+* Fixed an issue in CheckForPreReqs function where on Server Core the installation of the non existing Windows Feature 'RSAT-Feature-Tools-BitLocker-RemoteAdminTool' was erroneously checked. ([issue #8](https://github.com/PowerShell/xBitlocker/issues/8))
+
 
 ### 1.1.0.0
 
