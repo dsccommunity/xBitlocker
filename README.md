@@ -121,6 +121,8 @@ Defaults to false.
 
 ### Unreleased
 
+### 1.2.0.0
+
 * Converted appveyor.yml to install Pester from PSGallery instead of from Chocolatey.
 * Added Codecov support.
 * Updated appveyor.yml to use the one in template.

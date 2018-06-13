@@ -6,7 +6,7 @@
 # RootModule = ''
 
 # Version number of this module.
-ModuleVersion = '1.1.0.0'
+moduleVersion = '1.2.0.0'
 
 # ID used to uniquely identify this module
 GUID = 'dc4f3fd0-4e1d-4916-84f8-d0bb89d52507'
@@ -95,7 +95,23 @@ PrivateData = @{
         # IconUri = ''
 
         # ReleaseNotes of this module
-        # ReleaseNotes = ''
+        ReleaseNotes = '* Converted appveyor.yml to install Pester from PSGallery instead of from Chocolatey.
+* Added Codecov support.
+* Updated appveyor.yml to use the one in template.
+* Added folders for future unit and integration tests.
+* Added Visual Studio Code formatting settings.
+* Added .gitignore file.
+* Added markdown lint rules.
+* Fixed encoding on README.md.
+* Added `PowerShellVersion = "4.0"`, and updated copyright information, in the
+  module manifest.
+* Fixed issue which caused Test to incorrectly succeed on fully decrypted volumes when correct Key Protectors were present ([issue 13](https://github.com/PowerShell/xBitlocker/issues/13))
+* Fixed issue which caused xBLAutoBitlocker to incorrectly detect Fixed vs Removable volumes. ([issue 11](https://github.com/PowerShell/xBitlocker/issues/11))
+* Fixed issue which made xBLAutoBitlocker unable to encrypt volumes with drive letters assigned. ([issue 10](https://github.com/PowerShell/xBitlocker/issues/10))
+* Fixed an issue in CheckForPreReqs function where on Server Core the installation of the non existing Windows Feature "RSAT-Feature-Tools-BitLocker-RemoteAdminTool" was erroneously checked. ([issue 8](https://github.com/PowerShell/xBitlocker/issues/8))
+
+
+'
 
     } # End of PSData hashtable
 
@@ -108,5 +124,6 @@ PrivateData = @{
 # DefaultCommandPrefix = ''
 
 }
+
 
 
