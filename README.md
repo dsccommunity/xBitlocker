@@ -1,10 +1,31 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/wi5i60tojfd7056b/branch/master?svg=true)](https://ci.appveyor.com/project/PowerShell/xbitlocker/branch/master)
-
 # xBitlocker
+
 The **xBitlocker** module is a part of the Windows PowerShell Desired State Configuration (DSC) Resource Kit, which is a collection of DSC Resources produced by the PowerShell Team.
 This module contains the **xBLAutoBitlocker, xBLBitlocker, xBLTpm** resources.
 This DSC Module allows you to configure Bitlocker on a single disk, configure a TPM chip, or automatically enable Bitlocker on multiple disks.
 
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
+For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
+## Branches
+
+### master
+
+[![Build status](https://ci.appveyor.com/api/projects/status/wi5i60tojfd7056b/branch/master?svg=true)](https://ci.appveyor.com/project/PowerShell/xBitlocker/branch/master)
+[![codecov](https://codecov.io/gh/PowerShell/xBitlocker/branch/master/graph/badge.svg)](https://codecov.io/gh/PowerShell/xBitlocker/branch/master)
+
+This is the branch containing the latest release -
+no contributions should be made directly to this branch.
+
+### dev
+
+[![Build status](https://ci.appveyor.com/api/projects/status/wi5i60tojfd7056b/branch/dev?svg=true)](https://ci.appveyor.com/project/PowerShell/xBitlocker/branch/dev)
+[![codecov](https://codecov.io/gh/PowerShell/xBitlocker/branch/dev/graph/badge.svg)](https://codecov.io/gh/PowerShell/xBitlocker/branch/dev)
+
+This is the development branch
+to which contributions should be proposed by contributors as pull requests.
+This development branch will periodically be merged to the master branch,
+and be released to [PowerShell Gallery](https://www.powershellgallery.com/).
 
 ## Contributing
 Please check out common DSC Resources [contributing guidelines](https://github.com/PowerShell/DscResource.Kit/blob/master/CONTRIBUTING.md).
@@ -15,9 +36,9 @@ To install **xBitlocker** module
 
 * Unzip the content under $env:ProgramFiles\WindowsPowerShell\Modules folder
 
-To confirm installation:  
+To confirm installation:
 
-* Run **Get-DSCResource** to see that **xBLAutoBitlocker, xBLBitlocker, xBLTpm** are among the DSC Resources listed  
+* Run **Get-DSCResource** to see that **xBLAutoBitlocker, xBLBitlocker, xBLTpm** are among the DSC Resources listed
 
 ## Requirements
 
@@ -38,69 +59,89 @@ It does not work on Operating System drives.
 **xBLAutoBitlocker** has the following properties.
 Where no description is listed, properties correspond directly to [Enable-Bitlocker](http://technet.microsoft.com/en-us/library/jj649837.aspx) parameters.
 
-*   *DriveType:The type of volume, as reported by Get-Volume, to auto apply Bitlocker to 
+*   *DriveType:The type of volume to auto apply Bitlocker to. Valid values are "Fixed" or "Removable"
 *   *PrimaryProtector:The primary protector type to be used for AutoBitlocker.
-Valid values are: "AdAccountOrGroupProtector", "PasswordProtector", "Pin", "RecoveryKeyProtector", "RecoveryPasswordProtector", "StartupKeyProtector", or "TpmProtector" 
-*   MinDiskCapacityGB:If specified, only disks this size or greater will auto apply Bitlocker 
-*   AutoUnlock:Whether volumes should be enabled for auto unlock using Enable-BitlockerAutoUnlock 
-*   AdAccountOrGroup 
-*   AdAccountOrGroupProtector 
-*   EncryptionMethod 
-*   HardwareEncryption 
-*   Password 
-*   PasswordProtector 
-*   Pin 
-*   RecoveryKeyPath 
-*   RecoveryKeyProtector 
-*   RecoveryPasswordProtector 
-*   Service 
-*   SkipHardwareTest 
-*   StartupKeyPath 
-*   StartupKeyProtector 
-*   TpmProtector 
-*   UsedSpaceOnly 
+Valid values are: "AdAccountOrGroupProtector", "PasswordProtector", "Pin", "RecoveryKeyProtector", "RecoveryPasswordProtector", "StartupKeyProtector", or "TpmProtector"
+*   MinDiskCapacityGB:If specified, only disks this size or greater will auto apply Bitlocker
+*   AutoUnlock:Whether volumes should be enabled for auto unlock using Enable-BitlockerAutoUnlock
+*   AdAccountOrGroup
+*   AdAccountOrGroupProtector
+*   EncryptionMethod
+*   HardwareEncryption
+*   Password
+*   PasswordProtector
+*   Pin
+*   RecoveryKeyPath
+*   RecoveryKeyProtector
+*   RecoveryPasswordProtector
+*   Service
+*   SkipHardwareTest
+*   StartupKeyPath
+*   StartupKeyProtector
+*   TpmProtector
+*   UsedSpaceOnly
 
 **xBLBitlocker** has the following properties.
 Where no description is listed, properties correspond directly to [Enable-Bitlocker](http://technet.microsoft.com/en-us/library/jj649837.aspx) parameters.
 
-*   *MountPoint:The MountPoint name as reported in Get-BitLockerVolume 
+*   *MountPoint:The MountPoint name as reported in Get-BitLockerVolume
 *   *PrimaryProtector:The primary protector type to be used for AutoBitlocker.
-Valid values are: "AdAccountOrGroupProtector", "PasswordProtector", "Pin", "RecoveryKeyProtector", "RecoveryPasswordProtector", "StartupKeyProtector", or "TpmProtector" 
-*   AutoUnlock:Whether volumes should be enabled for auto unlock using Enable-BitlockerAutoUnlock 
+Valid values are: "AdAccountOrGroupProtector", "PasswordProtector", "Pin", "RecoveryKeyProtector", "RecoveryPasswordProtector", "StartupKeyProtector", or "TpmProtector"
+*   AutoUnlock:Whether volumes should be enabled for auto unlock using Enable-BitlockerAutoUnlock
 *   AllowImmediateReboot:Whether the computer can be immediately rebooted after enabling Bitlocker on an OS drive.
 Defaults to false.
 
-*   AdAccountOrGroup 
-*   AdAccountOrGroupProtector 
-*   EncryptionMethod 
-*   HardwareEncryption 
-*   Password 
-*   PasswordProtector 
-*   Pin 
-*   RecoveryKeyPath 
-*   RecoveryKeyProtector 
-*   RecoveryPasswordProtector 
-*   Service 
-*   SkipHardwareTest 
-*   StartupKeyPath 
-*   StartupKeyProtector 
-*   TpmProtector 
-*   UsedSpaceOnly 
+*   AdAccountOrGroup
+*   AdAccountOrGroupProtector
+*   EncryptionMethod
+*   HardwareEncryption
+*   Password
+*   PasswordProtector
+*   Pin
+*   RecoveryKeyPath
+*   RecoveryKeyProtector
+*   RecoveryPasswordProtector
+*   Service
+*   SkipHardwareTest
+*   StartupKeyPath
+*   StartupKeyProtector
+*   TpmProtector
+*   UsedSpaceOnly
 
 **xBLTpm** is used to initialize a TPM chip using [Initialize-TPM](http://technet.microsoft.com/en-us/library/jj603112.aspx).
 **xBLTpm** has the following properties.
 
-*   *Identity:Not actually used, so could be anything 
-*   AllowClear:Indicates that the provisioning process clears the TPM, if necessary, to move the TPM closer to complying with Windows Server® 2012 standards 
+*   *Identity:Not actually used, so could be anything
+*   AllowClear:Indicates that the provisioning process clears the TPM, if necessary, to move the TPM closer to complying with Windows Server® 2012 standards
 *   AllowPhysicalPresence:Indicates that the provisioning process may send physical presence commands that require a user to be present in order to continue.
 
-*   AllowImmediateReboot:Whether the computer can rebooted immediately after initializing the TPM 
+*   AllowImmediateReboot:Whether the computer can rebooted immediately after initializing the TPM
 
 ## Versions
 
 ### Unreleased
 
+### 1.2.0.0
+
+* Converted appveyor.yml to install Pester from PSGallery instead of from Chocolatey.
+* Added Codecov support.
+* Updated appveyor.yml to use the one in template.
+* Added folders for future unit and integration tests.
+* Added Visual Studio Code formatting settings.
+* Added .gitignore file.
+* Added markdown lint rules.
+* Fixed encoding on README.md.
+* Added `PowerShellVersion = '4.0'`, and updated copyright information, in the
+  module manifest.
+* Fixed issue which caused Test to incorrectly succeed on fully decrypted volumes when correct Key Protectors were present ([issue #13](https://github.com/PowerShell/xBitlocker/issues/13))
+* Fixed issue which caused xBLAutoBitlocker to incorrectly detect Fixed vs Removable volumes. ([issue #11](https://github.com/PowerShell/xBitlocker/issues/11))
+* Fixed issue which made xBLAutoBitlocker unable to encrypt volumes with drive letters assigned. ([issue #10](https://github.com/PowerShell/xBitlocker/issues/10))
+* Fixed an issue in CheckForPreReqs function where on Server Core the installation of the non existing Windows Feature 'RSAT-Feature-Tools-BitLocker-RemoteAdminTool' was erroneously checked. ([issue #8](https://github.com/PowerShell/xBitlocker/issues/8))
+
+
 ### 1.1.0.0
+
+* Versioning updates
 
 ### 1.0.1.1
 
@@ -111,10 +152,10 @@ Defaults to false.
 
 ### 1.0.0.0
 
-*   Initial release with the following resources 
-    *   xBLAutoBitlocker 
-    *   xBLBitlocker 
-    *   xBLTpm 
+*   Initial release with the following resources
+    *   xBLAutoBitlocker
+    *   xBLBitlocker
+    *   xBLTpm
 
 ## Examples
 
@@ -127,4 +168,4 @@ The example code for ConfigureBitlockerOnOSDrive is located in [`ConfigureBitloc
 
 Enables Bitlocker on an Operating System drive, and automatically enables Bitlocker on all drives of type 'Fixed'.
 The example code for ConfigureBitlockerAndAutoBitlocker is located in [`ConfigureBitlockerAndAutoBitlocker.ps1`](Examples/ConfigureBitlockerAndAutoBitlocker/ConfigureBitlockerAndAutoBitlocker.ps1).
-  
+
