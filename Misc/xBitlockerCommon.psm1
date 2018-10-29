@@ -20,61 +20,80 @@ function EnableBitlocker
         [System.String]
         $PrimaryProtector,
 
+        [Parameter()]
         [System.String]
         $AdAccountOrGroup,
 
+        [Parameter()]
         [System.Boolean]
         $AdAccountOrGroupProtector,
 
+        [Parameter()]
         [System.Boolean]
         $AllowImmediateReboot = $false,
 
+        [Parameter()]
         [System.Boolean]
         $AutoUnlock = $false,
 
+        [Parameter()]
         [ValidateSet("Aes128","Aes256")]
         [System.String]
         $EncryptionMethod,
 
+        [Parameter()]
         [System.Boolean]
         $HardwareEncryption,
 
+        [Parameter()]
         [System.Management.Automation.PSCredential]
         $Password,
 
+        [Parameter()]
         [System.Boolean]
         $PasswordProtector,
 
+        [Parameter()]
         [System.Management.Automation.PSCredential]
         $Pin,
 
+        [Parameter()]
         [System.String]
         $RecoveryKeyPath,
 
+        [Parameter()]
         [System.Boolean]
         $RecoveryKeyProtector,
 
+        [Parameter()]
         [System.Boolean]
         $RecoveryPasswordProtector,
 
+        [Parameter()]
         [System.Boolean]
         $Service,
 
+        [Parameter()]
         [System.Boolean]
         $SkipHardwareTest,
 
+        [Parameter()]
         [System.String]
         $StartupKeyPath,
 
+        [Parameter()]
         [System.Boolean]
         $StartupKeyProtector,
 
+        [Parameter()]
         [System.Boolean]
         $TpmProtector,
 
+        [Parameter()]
         [System.Boolean]
         $UsedSpaceOnly,
 
+        [Parameter()]
         $VerbosePreference
     )
 
@@ -267,61 +286,80 @@ function TestBitlocker
         [System.String]
         $PrimaryProtector,
 
+        [Parameter()]
         [System.String]
         $AdAccountOrGroup,
 
+        [Parameter()]
         [System.Boolean]
         $AdAccountOrGroupProtector,
 
+        [Parameter()]
         [System.Boolean]
         $AllowImmediateReboot = $false,
 
+        [Parameter()]
         [System.Boolean]
         $AutoUnlock = $false,
 
+        [Parameter()]
         [ValidateSet("Aes128","Aes256")]
         [System.String]
         $EncryptionMethod,
 
+        [Parameter()]
         [System.Boolean]
         $HardwareEncryption,
 
+        [Parameter()]
         [System.Management.Automation.PSCredential]
         $Password,
 
+        [Parameter()]
         [System.Boolean]
         $PasswordProtector,
 
+        [Parameter()]
         [System.Management.Automation.PSCredential]
         $Pin,
 
+        [Parameter()]
         [System.String]
         $RecoveryKeyPath,
 
+        [Parameter()]
         [System.Boolean]
         $RecoveryKeyProtector,
 
+        [Parameter()]
         [System.Boolean]
         $RecoveryPasswordProtector,
 
+        [Parameter()]
         [System.Boolean]
         $Service,
 
+        [Parameter()]
         [System.Boolean]
         $SkipHardwareTest,
 
+        [Parameter()]
         [System.String]
         $StartupKeyPath,
 
+        [Parameter()]
         [System.Boolean]
         $StartupKeyProtector,
 
+        [Parameter()]
         [System.Boolean]
         $TpmProtector,
 
+        [Parameter()]
         [System.Boolean]
         $UsedSpaceOnly,
 
+        [Parameter()]
         $VerbosePreference
     )
 
@@ -448,7 +486,27 @@ function CheckForPreReqs
 #Checks whether the KeyProtectorCollection returned from Get-BitlockerVolume contains the specified key protector type
 function ContainsKeyProtector
 {
-    param([string]$Type, $KeyProtectorCollection, [bool]$StartsWith = $false, [bool]$EndsWith = $false, [bool]$Contains = $false)
+    param
+    (
+        [Parameter()]
+        [string]
+        $Type,
+        
+        [Parameter()]
+        $KeyProtectorCollection,
+        
+        [Parameter()]
+        [bool]
+        $StartsWith = $false,
+        
+        [Parameter()]
+        [bool]
+        $EndsWith = $false,
+        
+        [Parameter()]
+        [bool]
+        $Contains = $false
+    )
 
     if ($null -ne $KeyProtectorCollection)
     {
@@ -479,7 +537,15 @@ function ContainsKeyProtector
 #Takes $PSBoundParameters from another function and adds in the keys and values from the given Hashtable
 function AddParameters
 {
-    param($PSBoundParametersIn, [Hashtable]$ParamsToAdd)
+    param
+    (
+        [Parameter()]
+        $PSBoundParametersIn,
+        
+        [Parameter()]
+        [Hashtable]
+        $ParamsToAdd
+    )
 
     foreach ($key in $ParamsToAdd.Keys)
     {
@@ -499,7 +565,19 @@ function AddParameters
 #are specified, only ParamsToKeep will be used.
 function RemoveParameters
 {
-    param($PSBoundParametersIn, [string[]]$ParamsToKeep, [string[]]$ParamsToRemove)
+    param
+    (
+        [Parameter()]
+        $PSBoundParametersIn,
+        
+        [Parameter()]
+        [string[]]
+        $ParamsToKeep,
+        
+        [Parameter()]
+        [string[]]
+        $ParamsToRemove
+    )
 
     if ($null -ne $ParamsToKeep -and $ParamsToKeep.Count -gt 0)
     {

@@ -44,12 +44,15 @@ function Set-TargetResource
         [System.String]
         $Identity,
 
+        [Parameter()]
         [System.Boolean]
         $AllowClear,
 
+        [Parameter()]
         [System.Boolean]
         $AllowPhysicalPresence,
 
+        [Parameter()]
         [System.Boolean]
         $AllowImmediateReboot = $false
     )
@@ -96,12 +99,15 @@ function Test-TargetResource
         [System.String]
         $Identity,
 
+        [Parameter()]
         [System.Boolean]
         $AllowClear,
 
+        [Parameter()]
         [System.Boolean]
         $AllowPhysicalPresence,
 
+        [Parameter()]
         [System.Boolean]
         $AllowImmediateReboot = $false
     )

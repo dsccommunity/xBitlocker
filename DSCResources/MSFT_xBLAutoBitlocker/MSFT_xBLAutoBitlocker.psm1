@@ -10,6 +10,7 @@ function Get-TargetResource
         [System.String]
         $DriveType,
 
+        [Parameter()]
         [System.Int32]
         $MinDiskCapacityGB,
 
@@ -18,55 +19,72 @@ function Get-TargetResource
         [System.String]
         $PrimaryProtector,
 
+        [Parameter()]
         [System.String]
         $AdAccountOrGroup,
 
+        [Parameter()]
         [System.Boolean]
         $AdAccountOrGroupProtector,
 
+        [Parameter()]
         [System.Boolean]
         $AutoUnlock = $false,
 
+        [Parameter()]
         [ValidateSet("Aes128","Aes256")]
         [System.String]
         $EncryptionMethod,
 
+        [Parameter()]
         [System.Boolean]
         $HardwareEncryption,
 
+        [Parameter()]
         [System.Management.Automation.PSCredential]
         $Password,
 
+        [Parameter()]
         [System.Boolean]
         $PasswordProtector,
 
+        [Parameter()]
         [System.Management.Automation.PSCredential]
         $Pin,
 
+        [Parameter()]
         [System.String]
         $RecoveryKeyPath,
 
+        [Parameter()]
         [System.Boolean]
         $RecoveryKeyProtector,
 
+        [Parameter()]
         [System.Boolean]
         $RecoveryPasswordProtector,
 
+        [Parameter()]
         [System.Boolean]
         $Service,
 
+        [Parameter()]
         [System.Boolean]
         $SkipHardwareTest,
 
+        [Parameter()]
         [System.String]
         $StartupKeyPath,
 
+        [Parameter()]
         [System.Boolean]
         $StartupKeyProtector,
 
+        [Parameter()]
         [System.Boolean]
         $TpmProtector,
 
+        [Parameter()]
         [System.Boolean]
         $UsedSpaceOnly
     )
@@ -94,6 +112,7 @@ function Set-TargetResource
         [System.String]
         $DriveType,
 
+        [Parameter()]
         [System.Int32]
         $MinDiskCapacityGB,
 
@@ -102,55 +121,72 @@ function Set-TargetResource
         [System.String]
         $PrimaryProtector,
 
+        [Parameter()]
         [System.String]
         $AdAccountOrGroup,
 
+        [Parameter()]
         [System.Boolean]
         $AdAccountOrGroupProtector,
 
+        [Parameter()]
         [System.Boolean]
         $AutoUnlock = $false,
 
+        [Parameter()]
         [ValidateSet("Aes128","Aes256")]
         [System.String]
         $EncryptionMethod,
 
+        [Parameter()]
         [System.Boolean]
         $HardwareEncryption,
 
+        [Parameter()]
         [System.Management.Automation.PSCredential]
         $Password,
 
+        [Parameter()]
         [System.Boolean]
         $PasswordProtector,
 
+        [Parameter()]
         [System.Management.Automation.PSCredential]
         $Pin,
 
+        [Parameter()]
         [System.String]
         $RecoveryKeyPath,
 
+        [Parameter()]
         [System.Boolean]
         $RecoveryKeyProtector,
 
+        [Parameter()]
         [System.Boolean]
         $RecoveryPasswordProtector,
 
+        [Parameter()]
         [System.Boolean]
         $Service,
 
+        [Parameter()]
         [System.Boolean]
         $SkipHardwareTest,
 
+        [Parameter()]
         [System.String]
         $StartupKeyPath,
 
+        [Parameter()]
         [System.Boolean]
         $StartupKeyProtector,
 
+        [Parameter()]
         [System.Boolean]
         $TpmProtector,
 
+        [Parameter()]
         [System.Boolean]
         $UsedSpaceOnly
     )
@@ -198,6 +234,7 @@ function Test-TargetResource
         [System.String]
         $DriveType,
 
+        [Parameter()]
         [System.Int32]
         $MinDiskCapacityGB,
 
@@ -206,55 +243,72 @@ function Test-TargetResource
         [System.String]
         $PrimaryProtector,
 
+        [Parameter()]
         [System.String]
         $AdAccountOrGroup,
 
+        [Parameter()]
         [System.Boolean]
         $AdAccountOrGroupProtector,
 
+        [Parameter()]
         [System.Boolean]
         $AutoUnlock = $false,
 
+        [Parameter()]
         [ValidateSet("Aes128","Aes256")]
         [System.String]
         $EncryptionMethod,
 
+        [Parameter()]
         [System.Boolean]
         $HardwareEncryption,
 
+        [Parameter()]
         [System.Management.Automation.PSCredential]
         $Password,
 
+        [Parameter()]
         [System.Boolean]
         $PasswordProtector,
 
+        [Parameter()]
         [System.Management.Automation.PSCredential]
         $Pin,
 
+        [Parameter()]
         [System.String]
         $RecoveryKeyPath,
 
+        [Parameter()]
         [System.Boolean]
         $RecoveryKeyProtector,
 
+        [Parameter()]
         [System.Boolean]
         $RecoveryPasswordProtector,
 
+        [Parameter()]
         [System.Boolean]
         $Service,
 
+        [Parameter()]
         [System.Boolean]
         $SkipHardwareTest,
 
+        [Parameter()]
         [System.String]
         $StartupKeyPath,
 
+        [Parameter()]
         [System.Boolean]
         $StartupKeyProtector,
 
+        [Parameter()]
         [System.Boolean]
         $TpmProtector,
 
+        [Parameter()]
         [System.Boolean]
         $UsedSpaceOnly
     )
@@ -303,6 +357,7 @@ function GetAutoBitlockerStatus
         [System.String]
         $DriveType,
 
+        [Parameter()]
         [System.Int32]
         $MinDiskCapacityGB,
 
@@ -311,55 +366,72 @@ function GetAutoBitlockerStatus
         [System.String]
         $PrimaryProtector,
 
+        [Parameter()]
         [System.String]
         $AdAccountOrGroup,
 
+        [Parameter()]
         [System.Boolean]
         $AdAccountOrGroupProtector,
 
+        [Parameter()]
         [System.Boolean]
         $AutoUnlock = $false,
 
+        [Parameter()]
         [ValidateSet("Aes128","Aes256")]
         [System.String]
         $EncryptionMethod,
 
+        [Parameter()]
         [System.Boolean]
         $HardwareEncryption,
 
+        [Parameter()]
         [System.Management.Automation.PSCredential]
         $Password,
 
+        [Parameter()]
         [System.Boolean]
         $PasswordProtector,
 
+        [Parameter()]
         [System.Management.Automation.PSCredential]
         $Pin,
 
+        [Parameter()]
         [System.String]
         $RecoveryKeyPath,
 
+        [Parameter()]
         [System.Boolean]
         $RecoveryKeyProtector,
 
+        [Parameter()]
         [System.Boolean]
         $RecoveryPasswordProtector,
 
+        [Parameter()]
         [System.Boolean]
         $Service,
 
+        [Parameter()]
         [System.Boolean]
         $SkipHardwareTest,
 
+        [Parameter()]
         [System.String]
         $StartupKeyPath,
 
+        [Parameter()]
         [System.Boolean]
         $StartupKeyProtector,
 
+        [Parameter()]
         [System.Boolean]
         $TpmProtector,
 
+        [Parameter()]
         [System.Boolean]
         $UsedSpaceOnly
     )
