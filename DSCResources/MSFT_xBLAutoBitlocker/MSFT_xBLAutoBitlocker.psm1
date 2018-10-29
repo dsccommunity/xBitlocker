@@ -1,10 +1,11 @@
 function Get-TargetResource
 {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSDSCUseVerboseMessageInDSCResource', '')]
     [CmdletBinding()]
     [OutputType([System.Collections.Hashtable])]
     param
     (
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [ValidateSet("Fixed","Removable")]
         [System.String]
         $DriveType,
@@ -13,7 +14,7 @@ function Get-TargetResource
         $MinDiskCapacityGB,
 
         [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $PrimaryProtector,
 
@@ -84,10 +85,11 @@ function Get-TargetResource
 
 function Set-TargetResource
 {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSDSCUseVerboseMessageInDSCResource', '')]
     [CmdletBinding()]
     param
     (
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [ValidateSet("Fixed","Removable")]
         [System.String]
         $DriveType,
@@ -96,7 +98,7 @@ function Set-TargetResource
         $MinDiskCapacityGB,
 
         [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $PrimaryProtector,
 
@@ -160,7 +162,7 @@ function Set-TargetResource
 
     $autoBlVols = GetAutoBitlockerStatus @PSBoundParameters
 
-    if ($autoBlVols -eq $null)
+    if ($null -eq $autoBlVols)
     {
         throw "No Auto Bitlocker volumes were found"
     }
@@ -186,11 +188,12 @@ function Set-TargetResource
 
 function Test-TargetResource
 {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSDSCUseVerboseMessageInDSCResource', '')]
     [CmdletBinding()]
     [OutputType([System.Boolean])]
     param
     (
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [ValidateSet("Fixed","Removable")]
         [System.String]
         $DriveType,
@@ -199,7 +202,7 @@ function Test-TargetResource
         $MinDiskCapacityGB,
 
         [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $PrimaryProtector,
 
@@ -263,7 +266,7 @@ function Test-TargetResource
 
     $autoBlVols = GetAutoBitlockerStatus @PSBoundParameters
 
-    if ($autoBlVols -eq $null)
+    if ($null -eq $autoBlVols)
     {
         return $false
     }
@@ -295,7 +298,7 @@ function GetAutoBitlockerStatus
     [OutputType([System.Collections.Hashtable])]
     param
     (
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [ValidateSet("Fixed","Removable")]
         [System.String]
         $DriveType,
@@ -304,7 +307,7 @@ function GetAutoBitlockerStatus
         $MinDiskCapacityGB,
 
         [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $PrimaryProtector,
 
@@ -362,16 +365,16 @@ function GetAutoBitlockerStatus
     )
 
     #First get all Bitlocker Volumes of type Data
-    $allBlvs = Get-BitLockerVolume | where {$_.VolumeType -eq "Data"}
+    $allBlvs = Get-BitLockerVolume | Where-Object -FilterScript {$_.VolumeType -eq "Data"}
 
     #Filter on size if it was specified
     if ($PSBoundParameters.ContainsKey("MinDiskCapacityGB"))
     {
-        $allBlvs = $allBlvs | where {$_.CapacityGB -ge $MinDiskCapacityGB}
+        $allBlvs = $allBlvs | Where-Object -FilterScript {$_.CapacityGB -ge $MinDiskCapacityGB}
     }
 
     #Now find disks of the appropriate drive type, and add them to the collection
-    if ($allBlvs -ne $null)
+    if ($null -ne $allBlvs)
     {
         [Hashtable]$returnValue = @{}
 
@@ -405,7 +408,7 @@ function GetAutoBitlockerStatus
                 $vol = $encryptableVolumes | Where-Object {($_.DeviceID -eq $blv.Mountpoint) -and ($_.VolumeType -eq $driveTypeValue)}
             }
 
-            if ($vol -ne $null)
+            if ($null -ne $vol)
             {
                 [Hashtable]$props = @{
                     VolumeStatus = $blv.VolumeStatus
