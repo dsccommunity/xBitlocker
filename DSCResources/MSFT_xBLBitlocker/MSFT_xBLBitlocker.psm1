@@ -9,8 +9,8 @@ function Get-TargetResource
         [System.String]
         $MountPoint,
 
-        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
         [Parameter(Mandatory = $true)]
+        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
         [System.String]
         $PrimaryProtector,
 
@@ -92,8 +92,8 @@ function Set-TargetResource
         [System.String]
         $MountPoint,
 
-        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
         [Parameter(Mandatory = $true)]
+        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
         [System.String]
         $PrimaryProtector,
 
@@ -171,8 +171,8 @@ function Test-TargetResource
         [System.String]
         $MountPoint,
 
-        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
         [Parameter(Mandatory = $true)]
+        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
         [System.String]
         $PrimaryProtector,
 

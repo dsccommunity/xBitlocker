@@ -13,8 +13,8 @@ function Get-TargetResource
         [System.Int32]
         $MinDiskCapacityGB,
 
-        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
         [Parameter(Mandatory = $true)]
+        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
         [System.String]
         $PrimaryProtector,
 
@@ -97,8 +97,8 @@ function Set-TargetResource
         [System.Int32]
         $MinDiskCapacityGB,
 
-        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
         [Parameter(Mandatory = $true)]
+        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
         [System.String]
         $PrimaryProtector,
 
@@ -201,8 +201,8 @@ function Test-TargetResource
         [System.Int32]
         $MinDiskCapacityGB,
 
-        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
         [Parameter(Mandatory = $true)]
+        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
         [System.String]
         $PrimaryProtector,
 
@@ -306,8 +306,8 @@ function GetAutoBitlockerStatus
         [System.Int32]
         $MinDiskCapacityGB,
 
-        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
         [Parameter(Mandatory = $true)]
+        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
         [System.String]
         $PrimaryProtector,
 

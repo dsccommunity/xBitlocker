@@ -15,8 +15,8 @@ function EnableBitlocker
         [System.String]
         $MountPoint,
 
-        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
         [Parameter(Mandatory = $true)]
+        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
         [System.String]
         $PrimaryProtector,
 
@@ -262,8 +262,8 @@ function TestBitlocker
         [System.String]
         $MountPoint,
 
-        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
         [Parameter(Mandatory = $true)]
+        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
         [System.String]
         $PrimaryProtector,
 
