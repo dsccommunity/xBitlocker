@@ -497,5 +497,3 @@ function GetAutoBitlockerStatus
 }
 
 Export-ModuleMember -Function *-TargetResource
-
-

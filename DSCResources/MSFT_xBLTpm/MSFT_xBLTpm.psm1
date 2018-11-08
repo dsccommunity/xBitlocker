@@ -5,7 +5,7 @@ function Get-TargetResource
     [OutputType([System.Collections.Hashtable])]
     param
     (
-        [Parameter(Mandatory = $true)]
+        [parameter(Mandatory = $true)]
         [System.String]
         $Identity
     )
@@ -118,6 +118,7 @@ function Test-TargetResource
 
     $tpm = Get-Tpm
 
+
     if ($null -eq $tpm)
     {
         return $false
@@ -130,5 +131,3 @@ function Test-TargetResource
 
 
 Export-ModuleMember -Function *-TargetResource
-
-
