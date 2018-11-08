@@ -1,73 +1,99 @@
 #A common function used to enable Bitlocker on a disk.
 function EnableBitlocker
 {
+    # Suppressing this rule because $global:DSCMachineStatus is used to trigger a reboot.
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidGlobalVars', '', Scope='Function', Target='DSCMachineStatus')]
+    <#
+        Suppressing this rule because $global:DSCMachineStatus is only set,
+        never used (by design of Desired State Configuration).
+    #>
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '', Scope='Function', Target='DSCMachineStatus')]
     [CmdletBinding()]
     param
     (
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $MountPoint,
 
+        [Parameter(Mandatory = $true)]
         [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
-        [parameter(Mandatory = $true)]
         [System.String]
         $PrimaryProtector,
 
+        [Parameter()]
         [System.String]
         $AdAccountOrGroup,
 
+        [Parameter()]
         [System.Boolean]
         $AdAccountOrGroupProtector,
 
+        [Parameter()]
         [System.Boolean]
         $AllowImmediateReboot = $false,
 
+        [Parameter()]
         [System.Boolean]
         $AutoUnlock = $false,
 
+        [Parameter()]
         [ValidateSet("Aes128","Aes256")]
         [System.String]
         $EncryptionMethod,
 
+        [Parameter()]
         [System.Boolean]
         $HardwareEncryption,
 
+        [Parameter()]
         [System.Management.Automation.PSCredential]
         $Password,
 
+        [Parameter()]
         [System.Boolean]
         $PasswordProtector,
 
+        [Parameter()]
         [System.Management.Automation.PSCredential]
         $Pin,
 
+        [Parameter()]
         [System.String]
         $RecoveryKeyPath,
 
+        [Parameter()]
         [System.Boolean]
         $RecoveryKeyProtector,
 
+        [Parameter()]
         [System.Boolean]
         $RecoveryPasswordProtector,
 
+        [Parameter()]
         [System.Boolean]
         $Service,
 
+        [Parameter()]
         [System.Boolean]
         $SkipHardwareTest,
 
+        [Parameter()]
         [System.String]
         $StartupKeyPath,
 
+        [Parameter()]
         [System.Boolean]
         $StartupKeyProtector,
 
+        [Parameter()]
         [System.Boolean]
         $TpmProtector,
 
+        [Parameter()]
         [System.Boolean]
         $UsedSpaceOnly,
 
+        [Parameter()]
         $VerbosePreference
     )
 
@@ -75,7 +101,7 @@ function EnableBitlocker
 
     $blv = Get-BitLockerVolume -MountPoint $MountPoint -ErrorAction SilentlyContinue
 
-    if ($blv -ne $null)
+    if ($null -ne $blv)
     {
         if ($PSBoundParameters.ContainsKey("TpmProtector") -and $PrimaryProtector -ne "TpmProtector")
         {
@@ -211,7 +237,7 @@ function EnableBitlocker
             $newBlv = Enable-Bitlocker @params
 
             #Check if the Enable succeeded
-            if ($newBlv -ne $null)
+            if ($null -ne $newBlv)
             {
                 if ($blv.VolumeType -eq "OperatingSystem") #Only initiate reboot if this is an OS drive
                 {
@@ -251,76 +277,95 @@ function TestBitlocker
     [OutputType([System.Boolean])]
     param
     (
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $MountPoint,
 
+        [Parameter(Mandatory = $true)]
         [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
-        [parameter(Mandatory = $true)]
         [System.String]
         $PrimaryProtector,
 
+        [Parameter()]
         [System.String]
         $AdAccountOrGroup,
 
+        [Parameter()]
         [System.Boolean]
         $AdAccountOrGroupProtector,
 
+        [Parameter()]
         [System.Boolean]
         $AllowImmediateReboot = $false,
 
+        [Parameter()]
         [System.Boolean]
         $AutoUnlock = $false,
 
+        [Parameter()]
         [ValidateSet("Aes128","Aes256")]
         [System.String]
         $EncryptionMethod,
 
+        [Parameter()]
         [System.Boolean]
         $HardwareEncryption,
 
+        [Parameter()]
         [System.Management.Automation.PSCredential]
         $Password,
 
+        [Parameter()]
         [System.Boolean]
         $PasswordProtector,
 
+        [Parameter()]
         [System.Management.Automation.PSCredential]
         $Pin,
 
+        [Parameter()]
         [System.String]
         $RecoveryKeyPath,
 
+        [Parameter()]
         [System.Boolean]
         $RecoveryKeyProtector,
 
+        [Parameter()]
         [System.Boolean]
         $RecoveryPasswordProtector,
 
+        [Parameter()]
         [System.Boolean]
         $Service,
 
+        [Parameter()]
         [System.Boolean]
         $SkipHardwareTest,
 
+        [Parameter()]
         [System.String]
         $StartupKeyPath,
 
+        [Parameter()]
         [System.Boolean]
         $StartupKeyProtector,
 
+        [Parameter()]
         [System.Boolean]
         $TpmProtector,
 
+        [Parameter()]
         [System.Boolean]
         $UsedSpaceOnly,
 
+        [Parameter()]
         $VerbosePreference
     )
 
     $blv = Get-BitLockerVolume -MountPoint $MountPoint -ErrorAction SilentlyContinue
 
-    if ($blv -eq $null)
+    if ($null -eq $blv)
     {
         Write-Verbose "Unable to locate MountPoint: $($MountPoint)"
         return $false
@@ -330,7 +375,7 @@ function TestBitlocker
         Write-Verbose "MountPoint: $($MountPoint) Not Encrypted"
         return $false
     }
-    elseif ($blv.KeyProtector -eq $null -or $blv.KeyProtector.Count -eq 0)
+    elseif ($null -eq $blv.KeyProtector -or $blv.KeyProtector.Count -eq 0)
     {
         Write-Verbose "No key protectors on MountPoint: $($MountPoint)"
         return $false
@@ -441,9 +486,29 @@ function CheckForPreReqs
 #Checks whether the KeyProtectorCollection returned from Get-BitlockerVolume contains the specified key protector type
 function ContainsKeyProtector
 {
-    param([string]$Type, $KeyProtectorCollection, [bool]$StartsWith = $false, [bool]$EndsWith = $false, [bool]$Contains = $false)
+    param
+    (
+        [Parameter()]
+        [string]
+        $Type,
+        
+        [Parameter()]
+        $KeyProtectorCollection,
+        
+        [Parameter()]
+        [bool]
+        $StartsWith = $false,
+        
+        [Parameter()]
+        [bool]
+        $EndsWith = $false,
+        
+        [Parameter()]
+        [bool]
+        $Contains = $false
+    )
 
-    if ($KeyProtectorCollection -ne $null)
+    if ($null -ne $KeyProtectorCollection)
     {
         foreach ($keyProtector in $KeyProtectorCollection)
         {
@@ -472,7 +537,15 @@ function ContainsKeyProtector
 #Takes $PSBoundParameters from another function and adds in the keys and values from the given Hashtable
 function AddParameters
 {
-    param($PSBoundParametersIn, [Hashtable]$ParamsToAdd)
+    param
+    (
+        [Parameter()]
+        $PSBoundParametersIn,
+        
+        [Parameter()]
+        [Hashtable]
+        $ParamsToAdd
+    )
 
     foreach ($key in $ParamsToAdd.Keys)
     {
@@ -492,9 +565,21 @@ function AddParameters
 #are specified, only ParamsToKeep will be used.
 function RemoveParameters
 {
-    param($PSBoundParametersIn, [string[]]$ParamsToKeep, [string[]]$ParamsToRemove)
+    param
+    (
+        [Parameter()]
+        $PSBoundParametersIn,
+        
+        [Parameter()]
+        [string[]]
+        $ParamsToKeep,
+        
+        [Parameter()]
+        [string[]]
+        $ParamsToRemove
+    )
 
-    if ($ParamsToKeep -ne $null -and $ParamsToKeep.Count -gt 0)
+    if ($null -ne $ParamsToKeep -and $ParamsToKeep.Count -gt 0)
     {
         [string[]]$ParamsToRemove = @()
 
@@ -509,7 +594,7 @@ function RemoveParameters
         }
     }
 
-    if ($ParamsToRemove -ne $null -and $ParamsToRemove.Count -gt 0)
+    if ($null -ne $ParamsToRemove -and $ParamsToRemove.Count -gt 0)
     {
         foreach ($param in $ParamsToRemove)
         {

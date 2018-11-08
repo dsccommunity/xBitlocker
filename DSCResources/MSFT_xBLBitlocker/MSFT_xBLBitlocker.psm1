@@ -1,70 +1,89 @@
 function Get-TargetResource
 {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSDSCUseVerboseMessageInDSCResource', '')]
     [CmdletBinding()]
     [OutputType([System.Collections.Hashtable])]
     param
     (
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $MountPoint,
 
+        [Parameter(Mandatory = $true)]
         [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
-        [parameter(Mandatory = $true)]
         [System.String]
         $PrimaryProtector,
 
+        [Parameter()]
         [System.String]
         $AdAccountOrGroup,
 
+        [Parameter()]
         [System.Boolean]
         $AdAccountOrGroupProtector,
 
+        [Parameter()]
         [System.Boolean]
         $AllowImmediateReboot = $false,
 
+        [Parameter()]
         [System.Boolean]
         $AutoUnlock = $false,
 
+        [Parameter()]
         [ValidateSet("Aes128","Aes256")]
         [System.String]
         $EncryptionMethod,
 
+        [Parameter()]
         [System.Boolean]
         $HardwareEncryption,
 
+        [Parameter()]
         [System.Management.Automation.PSCredential]
         $Password,
 
+        [Parameter()]
         [System.Boolean]
         $PasswordProtector,
 
+        [Parameter()]
         [System.Management.Automation.PSCredential]
         $Pin,
 
+        [Parameter()]
         [System.String]
         $RecoveryKeyPath,
 
+        [Parameter()]
         [System.Boolean]
         $RecoveryKeyProtector,
 
+        [Parameter()]
         [System.Boolean]
         $RecoveryPasswordProtector,
 
+        [Parameter()]
         [System.Boolean]
         $Service,
 
+        [Parameter()]
         [System.Boolean]
         $SkipHardwareTest,
 
+        [Parameter()]
         [System.String]
         $StartupKeyPath,
 
+        [Parameter()]
         [System.Boolean]
         $StartupKeyProtector,
 
+        [Parameter()]
         [System.Boolean]
         $TpmProtector,
 
+        [Parameter()]
         [System.Boolean]
         $UsedSpaceOnly
     )
@@ -76,83 +95,102 @@ function Get-TargetResource
     $returnValue = @{
         MountPoint = $MountPoint
     }
-    
+
     $returnValue
 }
 
 
 function Set-TargetResource
 {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSDSCUseVerboseMessageInDSCResource', '')]
     [CmdletBinding()]
     param
     (
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $MountPoint,
 
+        [Parameter(Mandatory = $true)]
         [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
-        [parameter(Mandatory = $true)]
         [System.String]
         $PrimaryProtector,
 
+        [Parameter()]
         [System.String]
         $AdAccountOrGroup,
 
+        [Parameter()]
         [System.Boolean]
         $AdAccountOrGroupProtector,
 
+        [Parameter()]
         [System.Boolean]
         $AllowImmediateReboot = $false,
 
+        [Parameter()]
         [System.Boolean]
         $AutoUnlock = $false,
 
+        [Parameter()]
         [ValidateSet("Aes128","Aes256")]
         [System.String]
         $EncryptionMethod,
 
+        [Parameter()]
         [System.Boolean]
         $HardwareEncryption,
 
+        [Parameter()]
         [System.Management.Automation.PSCredential]
         $Password,
 
+        [Parameter()]
         [System.Boolean]
         $PasswordProtector,
 
+        [Parameter()]
         [System.Management.Automation.PSCredential]
         $Pin,
 
+        [Parameter()]
         [System.String]
         $RecoveryKeyPath,
 
+        [Parameter()]
         [System.Boolean]
         $RecoveryKeyProtector,
 
+        [Parameter()]
         [System.Boolean]
         $RecoveryPasswordProtector,
 
+        [Parameter()]
         [System.Boolean]
         $Service,
 
+        [Parameter()]
         [System.Boolean]
         $SkipHardwareTest,
 
+        [Parameter()]
         [System.String]
         $StartupKeyPath,
 
+        [Parameter()]
         [System.Boolean]
         $StartupKeyProtector,
 
+        [Parameter()]
         [System.Boolean]
         $TpmProtector,
 
+        [Parameter()]
         [System.Boolean]
         $UsedSpaceOnly
     )
 
     #Load helper module    Import-Module "$((Get-Item -LiteralPath "$($PSScriptRoot)").Parent.Parent.FullName)\Misc\xBitlockerCommon.psm1" -Verbose:0
-      
+
     CheckForPreReqs
 
     EnableBitlocker @PSBoundParameters -VerbosePreference $VerbosePreference
@@ -160,71 +198,90 @@ function Set-TargetResource
 
 function Test-TargetResource
 {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSDSCUseVerboseMessageInDSCResource', '')]
     [CmdletBinding()]
     [OutputType([System.Boolean])]
     param
     (
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $MountPoint,
 
+        [Parameter(Mandatory = $true)]
         [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
-        [parameter(Mandatory = $true)]
         [System.String]
         $PrimaryProtector,
 
+        [Parameter()]
         [System.String]
         $AdAccountOrGroup,
 
+        [Parameter()]
         [System.Boolean]
         $AdAccountOrGroupProtector,
 
+        [Parameter()]
         [System.Boolean]
         $AllowImmediateReboot = $false,
 
+        [Parameter()]
         [System.Boolean]
         $AutoUnlock = $false,
 
+        [Parameter()]
         [ValidateSet("Aes128","Aes256")]
         [System.String]
         $EncryptionMethod,
 
+        [Parameter()]
         [System.Boolean]
         $HardwareEncryption,
 
+        [Parameter()]
         [System.Management.Automation.PSCredential]
         $Password,
 
+        [Parameter()]
         [System.Boolean]
         $PasswordProtector,
 
+        [Parameter()]
         [System.Management.Automation.PSCredential]
         $Pin,
 
+        [Parameter()]
         [System.String]
         $RecoveryKeyPath,
 
+        [Parameter()]
         [System.Boolean]
         $RecoveryKeyProtector,
 
+        [Parameter()]
         [System.Boolean]
         $RecoveryPasswordProtector,
 
+        [Parameter()]
         [System.Boolean]
         $Service,
 
+        [Parameter()]
         [System.Boolean]
         $SkipHardwareTest,
 
+        [Parameter()]
         [System.String]
         $StartupKeyPath,
 
+        [Parameter()]
         [System.Boolean]
         $StartupKeyProtector,
 
+        [Parameter()]
         [System.Boolean]
         $TpmProtector,
 
+        [Parameter()]
         [System.Boolean]
         $UsedSpaceOnly
     )
