@@ -106,7 +106,7 @@ try
                     Mock -CommandName Get-BitLockerVolume -Verifiable
 
                     TestBitlocker -MountPoint 'C:' -PrimaryProtector 'TpmProtector' | Should -Be $false
-                }   
+                }
             }
 
             Context 'When TestBitlocker is called and Get-BitlockerVolume returns a volume with no key protectors' {
@@ -118,7 +118,7 @@ try
                     }
 
                     TestBitlocker -MountPoint 'C:' -PrimaryProtector 'TpmProtector' | Should -Be $false
-                }   
+                }
             }
 
             Context 'When TestBitlocker is called, AutoUnlock is requested on a non-OS disk, and AutoUnlock is not enabled' {
@@ -132,7 +132,7 @@ try
                     }
 
                     TestBitlocker -MountPoint 'C:' -PrimaryProtector 'TpmProtector' -AutoUnlock $true | Should -Be $false
-                }   
+                }
             }
 
             $defaultBLV = @(
@@ -149,7 +149,7 @@ try
                     Mock -CommandName ContainsKeyProtector -Verifiable -MockWith { return $false }
 
                     TestBitlocker -MountPoint 'C:' -PrimaryProtector 'TpmProtector' -AdAccountOrGroupProtector $true | Should -Be $false
-                }   
+                }
             }
 
             Context 'When TestBitlocker is called, a PasswordProtector protector is requested, and does not exist on the disk' {
@@ -158,7 +158,7 @@ try
                     Mock -CommandName ContainsKeyProtector -Verifiable -MockWith { return $false }
 
                     TestBitlocker -MountPoint 'C:' -PrimaryProtector 'TpmProtector' -PasswordProtector $true | Should -Be $false
-                }   
+                }
             }
 
             Context 'When TestBitlocker is called, a Pin protector is requested, and does not exist on the disk' {
@@ -167,7 +167,7 @@ try
                     Mock -CommandName ContainsKeyProtector -Verifiable -MockWith { return $false }
 
                     TestBitlocker -MountPoint 'C:' -PrimaryProtector 'TpmProtector' -Pin $fakePin | Should -Be $false
-                }   
+                }
             }
 
             Context 'When TestBitlocker is called, a RecoveryKeyProtector protector is requested, and does not exist on the disk' {
@@ -176,7 +176,7 @@ try
                     Mock -CommandName ContainsKeyProtector -Verifiable -MockWith { return $false }
 
                     TestBitlocker -MountPoint 'C:' -PrimaryProtector 'TpmProtector' -RecoveryKeyProtector $true | Should -Be $false
-                }   
+                }
             }
 
             Context 'When TestBitlocker is called, a RecoveryPasswordProtector protector is requested, and does not exist on the disk' {
@@ -185,7 +185,7 @@ try
                     Mock -CommandName ContainsKeyProtector -Verifiable -MockWith { return $false }
 
                     TestBitlocker -MountPoint 'C:' -PrimaryProtector 'TpmProtector' -RecoveryPasswordProtector $true | Should -Be $false
-                }   
+                }
             }
 
             Context 'When TestBitlocker is called, a StartupKeyProtector protector is requested without a primary TPM protector, and does not exist on the disk' {
@@ -194,7 +194,7 @@ try
                     Mock -CommandName ContainsKeyProtector -Verifiable -MockWith { return $false }
 
                     TestBitlocker -MountPoint 'C:' -PrimaryProtector 'StartupKeyProtector' -StartupKeyProtector $true | Should -Be $false
-                }   
+                }
             }
 
             Context 'When TestBitlocker is called, a StartupKeyProtector protector is requested with a primary TPM protector, and does not exist on the disk' {
@@ -203,7 +203,7 @@ try
                     Mock -CommandName ContainsKeyProtector -Verifiable -MockWith { return $false }
 
                     TestBitlocker -MountPoint 'C:' -PrimaryProtector 'TpmProtector' -StartupKeyProtector $true | Should -Be $false
-                }   
+                }
             }
 
             Context 'When TestBitlocker is called, a TpmProtector protector is requested, and does not exist on the disk' {
@@ -212,7 +212,7 @@ try
                     Mock -CommandName ContainsKeyProtector -Verifiable -MockWith { return $false }
 
                     TestBitlocker -MountPoint 'C:' -PrimaryProtector 'TpmProtector' -TpmProtector $true | Should -Be $false
-                }   
+                }
             }
         }
 
@@ -465,7 +465,7 @@ try
                     Mock -CommandName Get-BitLockerVolume -Verifiable
 
                     { EnableBitlocker -MountPoint 'C:' -Pin $fakePin -PrimaryProtector 'PasswordProtector' } | Should -Throw -ExpectedMessage 'Unable to find Bitlocker Volume associated with Mount Point'
-                }   
+                }
             }
 
             Context 'When EnableBitlocker is called with TpmProtector set to True and PrimaryProtector not set to TpmProtector' {
@@ -493,7 +493,7 @@ try
                     Mock -CommandName Get-BitLockerVolume -Verifiable -MockWith { return $encryptedBLV }
 
                     { EnableBitlocker -MountPoint $mountPoint -TpmProtector $true -PrimaryProtector $PrimaryProtector } | Should -Throw -ExpectedMessage 'If TpmProtector is used, it must be the PrimaryProtector.'
-                }   
+                }
             }
 
             Context 'When EnableBitlocker is called with Pin specified and TpmProtector not specified' {
@@ -501,7 +501,7 @@ try
                     Mock -CommandName Get-BitLockerVolume -Verifiable -MockWith { return $encryptedBLV }
 
                     { EnableBitlocker -MountPoint $mountPoint -Pin $fakePin -PrimaryProtector 'PasswordProtector' } | Should -Throw -ExpectedMessage 'A TpmProtector must be used if Pin is used.'
-                }   
+                }
             }
 
             Context 'When EnableBitlocker is called with Pin specified and TpmProtector not specified' {
@@ -509,7 +509,7 @@ try
                     Mock -CommandName Get-BitLockerVolume -Verifiable -MockWith { return $encryptedBLV }
 
                     { EnableBitlocker -MountPoint $mountPoint -Pin $fakePin -PrimaryProtector 'PasswordProtector' } | Should -Throw -ExpectedMessage 'A TpmProtector must be used if Pin is used.'
-                }   
+                }
             }
 
             $defaultEnableParams = @{
@@ -534,7 +534,7 @@ try
                     Mock -CommandName Restart-Computer -Verifiable
 
                     EnableBitlocker @defaultEnableParams
-                }   
+                }
             }
 
             Context 'When EnableBitlocker is called, the volume is not yet encrypted, and Enable-Bitlocker does not return a result' {
@@ -543,7 +543,7 @@ try
                     Mock -CommandName Enable-Bitlocker -Verifiable
 
                     { EnableBitlocker @defaultEnableParams } | Should -Throw -ExpectedMessage 'Failed to successfully enable Bitlocker on MountPoint'
-                }   
+                }
             }
 
             Context 'When EnableBitlocker is called, the volume is not yet encrypted and is not an OS drive, and AutoUnlock is specified' {
@@ -562,7 +562,7 @@ try
                     EnableBitlocker @defaultEnableParams
 
                     $defaultEnableParams.Remove('AutoUnlock')
-                }   
+                }
             }
 
             Context 'When EnableBitlocker is called with TPM only and the volume is not yet encrypted' {
@@ -577,7 +577,7 @@ try
                     }
 
                     EnableBitlocker @tpmOnlyEnableParams
-                }   
+                }
             }
 
             Context 'When EnableBitlocker is called with TPM and pin only and the volume is not yet encrypted' {
@@ -593,7 +593,7 @@ try
                     }
 
                     EnableBitlocker @tpmAndPinOnlyEnableParams
-                }   
+                }
             }
 
             Context 'When EnableBitlocker is called with TPM and pin only and the volume is not yet encrypted' {
@@ -610,7 +610,7 @@ try
                     }
 
                     EnableBitlocker @tpmAndStartupOnlyEnableParams
-                }   
+                }
             }
 
             Context 'When EnableBitlocker is called with a Password Protector and the volume is not yet encrypted' {
@@ -626,7 +626,7 @@ try
                     }
 
                     EnableBitlocker @passwordEnableParams
-                }   
+                }
             }
 
             Context 'When EnableBitlocker is called with a Recovery Password Protector and the volume is not yet encrypted' {
@@ -642,7 +642,7 @@ try
                     }
 
                     EnableBitlocker @recoveryPasswordEnableParams
-                }   
+                }
             }
 
             Context 'When EnableBitlocker is called with a StartupKey Protector and the volume is not yet encrypted' {
@@ -658,7 +658,7 @@ try
                     }
 
                     EnableBitlocker @startupKeyEnableParams
-                }   
+                }
             }
         }
 
@@ -686,7 +686,7 @@ try
                     Mock -CommandName Add-BitLockerKeyProtector -Verifiable -ParameterFilter {$MountPoint -eq 'AdAccountOrGroupProtector'}
 
                     EnableBitlocker -MountPoint 'AdAccountOrGroupProtector' -Pin $fakePin -PrimaryProtector 'TpmProtector' -TpmProtector $true -AdAccountOrGroupProtector $true
-                }   
+                }
             }
 
             Context 'When Add-MissingBitLockerKeyProtector is called, the PasswordProtector protector is requested but not yet present on the volume, and is not the PrimaryKeyProtector' {
@@ -696,7 +696,7 @@ try
                     Mock -CommandName Add-BitLockerKeyProtector -Verifiable -ParameterFilter {$MountPoint -eq 'PasswordProtector'}
 
                     EnableBitlocker -MountPoint 'PasswordProtector' -Pin $fakePin -PrimaryProtector 'TpmProtector' -TpmProtector $true -PasswordProtector $true
-                }   
+                }
             }
 
             Context 'When Add-MissingBitLockerKeyProtector is called, the RecoveryKeyProtector protector is requested but not yet present on the volume, and is not the PrimaryKeyProtector' {
@@ -706,7 +706,7 @@ try
                     Mock -CommandName Add-BitLockerKeyProtector -Verifiable -ParameterFilter {$MountPoint -eq 'RecoveryKeyProtector'}
 
                     EnableBitlocker -MountPoint 'RecoveryKeyProtector' -Pin $fakePin -PrimaryProtector 'TpmProtector' -TpmProtector $true -RecoveryKeyProtector $true
-                }   
+                }
             }
 
             Context 'When Add-MissingBitLockerKeyProtector is called, the RecoveryPasswordProtector protector is requested but not yet present on the volume, and is not the PrimaryKeyProtector' {
@@ -716,7 +716,7 @@ try
                     Mock -CommandName Add-BitLockerKeyProtector -Verifiable -ParameterFilter {$MountPoint -eq 'RecoveryPasswordProtector'}
 
                     EnableBitlocker -MountPoint 'RecoveryPasswordProtector' -Pin $fakePin -PrimaryProtector 'TpmProtector' -TpmProtector $true -RecoveryPasswordProtector $true
-                }   
+                }
             }
 
             Context 'When Add-MissingBitLockerKeyProtector is called, the StartupKeyProtector protector is requested but not yet present on the volume, and is not the PrimaryKeyProtector' {
@@ -726,7 +726,7 @@ try
                     Mock -CommandName Add-BitLockerKeyProtector -Verifiable -ParameterFilter {$MountPoint -eq 'StartupKeyProtector'}
 
                     EnableBitlocker -MountPoint 'StartupKeyProtector' -PrimaryProtector 'RecoveryPasswordProtector' -RecoveryPasswordProtector $true -StartupKeyProtector $true
-                }   
+                }
             }
         }
 

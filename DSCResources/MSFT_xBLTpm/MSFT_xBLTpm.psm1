@@ -118,7 +118,6 @@ function Test-TargetResource
 
     $tpm = Get-Tpm
 
-
     if ($null -eq $tpm)
     {
         return $false

@@ -819,14 +819,14 @@ function ContainsKeyProtector
         [Parameter()]
         [string]
         $Type,
-        
+
         [Parameter()]
         $KeyProtectorCollection,
-        
+
         [Parameter()]
         [bool]
         $StartsWith = $false,
-        
+
         [Parameter()]
         [bool]
         $Contains = $false
