@@ -127,6 +127,7 @@ Defaults to false.
   originally encrypted and AutoUnlock was not used.
 * Add remaining Unit Tests for xBitlockerCommon.
 * Add Unit tests for MSFT_xBLTpm
+* Add remaining Unit Tests for xBLAutoBitlocker
 
 ### 1.2.0.0
 
