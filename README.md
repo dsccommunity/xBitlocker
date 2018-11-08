@@ -114,7 +114,6 @@ Defaults to false.
 *   *Identity:Not actually used, so could be anything
 *   AllowClear:Indicates that the provisioning process clears the TPM, if necessary, to move the TPM closer to complying with Windows Server 2012 standards
 *   AllowPhysicalPresence:Indicates that the provisioning process may send physical presence commands that require a user to be present in order to continue.
-
 *   AllowImmediateReboot:Whether the computer can rebooted immediately after initializing the TPM
 
 ## Versions
@@ -124,6 +123,9 @@ Defaults to false.
 * Update appveyor.yml to use the default template.
 * Added default template files .gitattributes, and .vscode settings.
 * Fixes most PSScriptAnalyzer issues.
+* Fix issue where AutoUnlock is not set if requested, if the disk was
+  originally encrypted and AutoUnlock was not used.
+* Add remaining Unit Tests for xBitlockerCommon.
 
 ### 1.2.0.0
 
