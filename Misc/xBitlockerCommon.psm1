@@ -192,7 +192,7 @@ function EnableBitlocker
             throw "A TpmProtector must be used if Pin is used."
         }
 
-        Add-MissingBitLockerKeyProtector @PSBoundParameters -Verbose:$VerbosePreference
+        Add-MissingBitLockerKeyProtector @PSBoundParameters
 
         #Now enable Bitlocker with the primary key protector
         if ($blv.VolumeStatus -eq "FullyDecrypted")
