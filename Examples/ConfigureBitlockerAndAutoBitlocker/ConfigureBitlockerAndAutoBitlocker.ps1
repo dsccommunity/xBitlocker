@@ -1,6 +1,7 @@
 Configuration ConfigureBitlockerAndAutoBitlocker
 {
-    Import-DscResource -Module xBitlocker
+    Import-DscResource –ModuleName PSDesiredStateConfiguration
+    Import-DscResource -ModuleName xBitlocker
 
     Node 'E15-1'
     {
