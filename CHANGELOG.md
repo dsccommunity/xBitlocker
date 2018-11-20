@@ -10,6 +10,9 @@
 - Add remaining Unit Tests for xBitlockerCommon.
 - Add Unit tests for MSFT_xBLTpm
 - Add remaining Unit Tests for xBLAutoBitlocker
+- Moved change log to CHANGELOG.md file
+- Fixed Markdown validation warnings in README.md
+- Added .MetaTestOptIn.json file to root of module
 
 ## 1.2.0.0
 
