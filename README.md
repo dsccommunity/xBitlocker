@@ -128,6 +128,7 @@ Defaults to false.
 * Add remaining Unit Tests for xBitlockerCommon.
 * Add Unit tests for MSFT_xBLTpm
 * Add remaining Unit Tests for xBLAutoBitlocker
+* Add Unit tests for MSFT_xBLBitlocker
 
 ### 1.2.0.0
 
