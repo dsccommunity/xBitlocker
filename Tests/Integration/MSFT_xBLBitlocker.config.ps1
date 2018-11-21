@@ -13,7 +13,6 @@ else
         AllNodes = @(
             @{
                 NodeName        = 'localhost'
-                CertificateFile = $env:DscPublicCertificatePath
             }
         )
     }

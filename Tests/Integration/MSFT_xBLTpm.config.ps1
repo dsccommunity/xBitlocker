@@ -13,11 +13,6 @@ else
         AllNodes = @(
             @{
                 NodeName        = 'localhost'
-                CertificateFile = $env:DscPublicCertificatePath
-
-                # TODO: (Optional) Add configuration properties.
-                UserName        = 'MyInstallAccount'
-                Password        = 'MyP@ssw0rd!1'
             }
         )
     }
