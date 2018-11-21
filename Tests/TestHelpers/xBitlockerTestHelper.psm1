@@ -24,10 +24,9 @@ function Test-RequiredFeaturesInstalled
 
 <#
     .SYNOPSIS
-        Checks whether the system has a TPM chip, and whether it's in a ready
-        state.
+        Checks whether the system has a TPM chip.
 #>
-function Test-HasReadyTpm
+function Test-HasPresentTpm
 {
     [CmdletBinding()]
     [OutputType([System.Boolean])]

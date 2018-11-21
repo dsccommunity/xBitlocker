@@ -17,6 +17,7 @@ $TestEnvironment = Initialize-TestEnvironment `
     -DSCResourceName $script:dcsResourceName `
     -TestType Integration
 
+# Import xBitlocker Test Helper Module
 Import-Module -Name (Join-Path -Path $script:moduleRoot -ChildPath (Join-Path -Path 'Tests' -ChildPath (Join-Path -Path 'TestHelpers' -ChildPath 'xBitlockerTestHelper.psm1'))) -Force
 #endregion
 
