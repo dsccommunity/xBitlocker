@@ -952,7 +952,7 @@ function Remove-FromPSBoundParametersUsingHashtable
         [System.String[]]
         $ParamsToKeep,
 
-        [Parameter(Mandatory = $true, ParameterSetName = 'Remove-FromPSBoundParametersUsingHashtable')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'RemoveParameters')]
         [System.String[]]
         $ParamsToRemove
     )

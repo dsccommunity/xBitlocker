@@ -42,7 +42,8 @@ function Get-TargetResource
         $AllowImmediateReboot = $false
     )
 
-    #Load helper module    Import-Module "$((Get-Item -LiteralPath "$($PSScriptRoot)").Parent.Parent.FullName)\Misc\xBitlockerCommon.psm1" -Verbose:0
+    #Load helper module
+    Import-Module "$((Get-Item -LiteralPath "$($PSScriptRoot)").Parent.Parent.FullName)\Misc\xBitlockerCommon.psm1" -Verbose:0
 
     Assert-HasPrereqsForBitlocker
 
@@ -108,7 +109,8 @@ function Set-TargetResource
         $AllowImmediateReboot = $false
     )
 
-    #Load helper module    Import-Module "$((Get-Item -LiteralPath "$($PSScriptRoot)").Parent.Parent.FullName)\Misc\xBitlockerCommon.psm1" -Verbose:0
+    #Load helper module
+    Import-Module "$((Get-Item -LiteralPath "$($PSScriptRoot)").Parent.Parent.FullName)\Misc\xBitlockerCommon.psm1" -Verbose:0
 
     Assert-HasPrereqsForBitlocker
 
@@ -183,7 +185,8 @@ function Test-TargetResource
         $AllowImmediateReboot = $false
     )
 
-    #Load helper module    Import-Module "$((Get-Item -LiteralPath "$($PSScriptRoot)").Parent.Parent.FullName)\Misc\xBitlockerCommon.psm1" -Verbose:0
+    #Load helper module
+    Import-Module "$((Get-Item -LiteralPath "$($PSScriptRoot)").Parent.Parent.FullName)\Misc\xBitlockerCommon.psm1" -Verbose:0
 
     Assert-HasPrereqsForBitlocker
 
