@@ -14,6 +14,7 @@
 - Moved change log to CHANGELOG.md file
 - Fixed Markdown validation warnings in README.md
 - Added .MetaTestOptIn.json file to root of module
+- Add Integration Tests for module resources
 
 ## 1.2.0.0
 
