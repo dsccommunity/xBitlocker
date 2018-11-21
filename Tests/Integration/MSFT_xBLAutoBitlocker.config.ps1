@@ -12,8 +12,7 @@ else
     $ConfigurationData = @{
         AllNodes = @(
             @{
-                NodeName        = 'localhost'
-                #CertificateFile = $env:DscPublicCertificatePath
+                NodeName                    = 'localhost'
                 PsDscAllowPlainTextPassword = $true
             }
         )
@@ -24,7 +23,7 @@ else
     .SYNOPSIS
         Enables Bitlocker on Fixed drives using a PasswordProtector
 #>
-Configuration MSFT_xBLAutoBitlocker_BasicTPMEncryptionOnSysDrive_Config
+Configuration MSFT_xBLAutoBitlocker_EnablePasswordProtectorOnDataDrives_Config
 {
     Import-DscResource -ModuleName 'xBitlocker'
 

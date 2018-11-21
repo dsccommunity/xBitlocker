@@ -37,7 +37,7 @@ function Test-HasReadyTpm
 
     if ($null -eq (Get-Command -Name Get-Tpm -ErrorAction SilentlyContinue) -or !((Get-Tpm).TpmPresent))
     {
-        Write-Warning -Message 'No TPM is present on test machine. Skipping MSFT_xBLTpm Integration tests.'
+        Write-Warning -Message 'No TPM is present on test machine. Skipping Integration tests.'
         $hasReadyTpm = $false
     }
 

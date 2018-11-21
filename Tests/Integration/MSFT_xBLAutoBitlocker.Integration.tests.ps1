@@ -20,11 +20,13 @@ $TestEnvironment = Initialize-TestEnvironment `
 Import-Module -Name (Join-Path -Path $script:moduleRoot -ChildPath (Join-Path -Path 'Tests' -ChildPath (Join-Path -Path 'TestHelpers' -ChildPath 'xBitlockerTestHelper.psm1'))) -Force
 #endregion
 
+# Make sure required features are installed before running tests
 if (!(Test-RequiredFeaturesInstalled))
 {
     return
 }
 
+# Make sure there are available Data disks to test AutoBitlocker on
 $fixedDriveBlvs = Get-BitLockerVolume | Where-Object -FilterScript {$_.VolumeType -eq 'Data'}
 
 if ($null -eq $fixedDriveBlvs)
@@ -50,7 +52,7 @@ try
     . $configurationFile
 
     Describe "$($script:dcsResourceName)_Integration" {
-        $configurationName = "$($script:dcsResourceName)_BasicTPMEncryptionOnSysDrive_Config"
+        $configurationName = "$($script:dcsResourceName)_EnablePasswordProtectorOnDataDrives_Config"
 
         Context ('When using configuration {0}' -f $configurationName) {
             It 'Should compile and apply the MOF without throwing' {

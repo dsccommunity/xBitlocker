@@ -20,11 +20,13 @@ $TestEnvironment = Initialize-TestEnvironment `
 Import-Module -Name (Join-Path -Path $script:moduleRoot -ChildPath (Join-Path -Path 'Tests' -ChildPath (Join-Path -Path 'TestHelpers' -ChildPath 'xBitlockerTestHelper.psm1'))) -Force
 #endregion
 
+# Make sure the TPM is in a ready state before running tests
 if (!(Test-HasReadyTpm))
 {
     return
 }
 
+# Make sure required features are installed before running tests
 if (!(Test-RequiredFeaturesInstalled))
 {
     return
