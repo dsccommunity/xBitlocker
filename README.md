@@ -143,15 +143,16 @@ parameters.
 .
 **xBLTpm** has the following properties.
 
-* Identity: Not actually used, so could be anything
+* Identity: A required string value which is used as a Key for the resource.
+  The value does not matter, as long as its not empty.
 * AllowClear: Indicates that the provisioning process clears the TPM, if
   necessary, to move the TPM closer to complying with Windows Server 2012
-  standards
+  standards.
 * AllowPhysicalPresence: Indicates that the provisioning process may send
   physical presence commands that require a user to be present in order to
   continue.
 * AllowImmediateReboot: Whether the computer can rebooted immediately after
-  initializing the TPM
+  initializing the TPM.
 
 ## Examples
 

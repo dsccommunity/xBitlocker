@@ -37,7 +37,7 @@ try
 
     InModuleScope $script:DSCResourceName {
         # Override helper functions
-        function CheckForPreReqs {}
+        function Assert-HasPrereqsForBitlocker {}
 
         # Override Bitlocker functions
         function Get-Tpm {}
@@ -51,9 +51,9 @@ try
             }
 
             Mock -CommandName Import-Module -Verifiable
-            Mock -CommandName CheckForPreReqs -Verifiable
+            Mock -CommandName Assert-HasPrereqsForBitlocker -Verifiable
 
-            Context 'When Get-TargetResource is called, CheckForPrereqs succeeds, and Get-Tpm returns a value' {
+            Context 'When Get-TargetResource is called, Assert-HasPrereqsForBitlocker succeeds, and Get-Tpm returns a value' {
                 Mock -CommandName Get-Tpm -Verifiable -MockWith { return 'NotNull' }
 
                 It 'Should return a Hashtable with the input resource Identity' {
@@ -71,9 +71,9 @@ try
             }
 
             Mock -CommandName Import-Module -Verifiable
-            Mock -CommandName CheckForPreReqs -Verifiable
+            Mock -CommandName Assert-HasPrereqsForBitlocker -Verifiable
 
-            Context 'When Set-TargetResource is called, CheckForPrereqs succeeds, and a restart is required' {
+            Context 'When Set-TargetResource is called, Assert-HasPrereqsForBitlocker succeeds, and a restart is required' {
                 Mock -CommandName Initialize-Tpm -Verifiable -MockWith {
                     return @{
                         RestartRequired = $true
@@ -102,9 +102,9 @@ try
             }
 
             Mock -CommandName Import-Module -Verifiable
-            Mock -CommandName CheckForPreReqs -Verifiable
+            Mock -CommandName Assert-HasPrereqsForBitlocker -Verifiable
 
-            Context 'When Test-TargetResource is called, CheckForPrereqs succeeds, Get-Tpm returns a value, and TpmReady is True' {
+            Context 'When Test-TargetResource is called, Assert-HasPrereqsForBitlocker succeeds, Get-Tpm returns a value, and TpmReady is True' {
                 Mock -CommandName Get-Tpm -Verifiable -MockWith {
                     return @{
                         TpmReady = $true
@@ -116,7 +116,7 @@ try
                 }
             }
 
-            Context 'When Test-TargetResource is called, CheckForPrereqs succeeds, Get-Tpm returns a value, and TpmReady is False' {
+            Context 'When Test-TargetResource is called, Assert-HasPrereqsForBitlocker succeeds, Get-Tpm returns a value, and TpmReady is False' {
                 Mock -CommandName Get-Tpm -Verifiable -MockWith {
                     return @{
                         TpmReady = $false
@@ -128,7 +128,7 @@ try
                 }
             }
 
-            Context 'When Test-TargetResource is called, CheckForPrereqs succeeds, and Get-Tpm returns null' {
+            Context 'When Test-TargetResource is called, Assert-HasPrereqsForBitlocker succeeds, and Get-Tpm returns null' {
                 Mock -CommandName Get-Tpm -Verifiable
                 Mock -CommandName Write-Error -Verifiable
 
