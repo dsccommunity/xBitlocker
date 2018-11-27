@@ -37,14 +37,14 @@ try
 
     InModuleScope $script:DSCResourceName {
         # Override helper functions
-        function CheckForPreReqs {}
+        function Assert-HasPrereqsForBitlocker {}
 
         # Setup common test variables
         $testMountPoint       = 'C:'
         $testPrimaryProtector = 'TpmProtector'
 
         # Setup common Mocks
-        Mock -CommandName CheckForPreReqs -Verifiable
+        Mock -CommandName Assert-HasPrereqsForBitlocker -Verifiable
 
         Describe 'MSFT_xBLBitlocker\Get-TargetResource' -Tag 'Get' {
             AfterEach {
@@ -67,8 +67,8 @@ try
             }
 
             Context 'When Set-TargetResource is called' {
-                It 'Should call EnableBitlocker' {
-                    Mock -CommandName EnableBitlocker -Verifiable
+                It 'Should call Enable-BitlockerInternal' {
+                    Mock -CommandName Enable-BitlockerInternal -Verifiable
 
                     Set-TargetResource -MountPoint $testMountPoint -PrimaryProtector $testPrimaryProtector
                 }
@@ -80,17 +80,17 @@ try
                 Assert-VerifiableMock
             }
 
-            Context 'When TestBitlocker returns True' {
+            Context 'When Test-BitlockerEnabled returns True' {
                 It 'Should return True' {
-                    Mock -CommandName TestBitlocker -Verifiable -MockWith { return $true }
+                    Mock -CommandName Test-BitlockerEnabled -Verifiable -MockWith { return $true }
 
                     Test-TargetResource -MountPoint $testMountPoint -PrimaryProtector $testPrimaryProtector | Should -Be $true
                 }
             }
 
-            Context 'When TestBitlocker returns False' {
+            Context 'When Test-BitlockerEnabled returns False' {
                 It 'Should return False' {
-                    Mock -CommandName TestBitlocker -Verifiable -MockWith { return $false }
+                    Mock -CommandName Test-BitlockerEnabled -Verifiable -MockWith { return $false }
 
                     Test-TargetResource -MountPoint $testMountPoint -PrimaryProtector $testPrimaryProtector | Should -Be $false
                 }

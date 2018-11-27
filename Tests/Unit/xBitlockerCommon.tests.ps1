@@ -16,7 +16,7 @@ try
             )
         }
 
-        Describe 'xBitlockerCommon\TestBitlocker' {
+        Describe 'xBitlockerCommon\Test-BitlockerEnabled' {
 
             Context 'When OS Volume is not Encrypted and No Key Protectors Assigned' {
                 Mock `
@@ -37,7 +37,7 @@ try
                 }
 
                 It 'Should Fail The Test (TPM and RecoveryPassword Protectors)' {
-                    TestBitlocker -MountPoint 'C:' -PrimaryProtector 'TPMProtector' -RecoveryPasswordProtector $true | Should -Be $false
+                    Test-BitlockerEnabled -MountPoint 'C:' -PrimaryProtector 'TPMProtector' -RecoveryPasswordProtector $true | Should -Be $false
                 }
             }
 
@@ -67,7 +67,7 @@ try
                 }
 
                 It 'Should Pass The Test (TPM and RecoveryPassword Protectors)' {
-                    TestBitlocker -MountPoint 'C:' -PrimaryProtector 'TPMProtector' -RecoveryPasswordProtector $true -verbose | Should -Be $true
+                    Test-BitlockerEnabled -MountPoint 'C:' -PrimaryProtector 'TPMProtector' -RecoveryPasswordProtector $true -verbose | Should -Be $true
                 }
             }
 
@@ -97,19 +97,19 @@ try
                 }
 
                 It 'Should Fail The Test (TPM and RecoveryPassword Protectors)' {
-                    TestBitlocker -MountPoint 'C:' -PrimaryProtector 'TPMProtector' -RecoveryPasswordProtector $true | Should -Be $false
+                    Test-BitlockerEnabled -MountPoint 'C:' -PrimaryProtector 'TPMProtector' -RecoveryPasswordProtector $true | Should -Be $false
                 }
             }
 
-            Context 'When TestBitlocker is called and Get-BitlockerVolume returns null' {
+            Context 'When Test-BitlockerEnabled is called and Get-BitlockerVolume returns null' {
                 It 'Should return False' {
                     Mock -CommandName Get-BitLockerVolume -Verifiable
 
-                    TestBitlocker -MountPoint 'C:' -PrimaryProtector 'TpmProtector' | Should -Be $false
+                    Test-BitlockerEnabled -MountPoint 'C:' -PrimaryProtector 'TpmProtector' | Should -Be $false
                 }
             }
 
-            Context 'When TestBitlocker is called and Get-BitlockerVolume returns a volume with no key protectors' {
+            Context 'When Test-BitlockerEnabled is called and Get-BitlockerVolume returns a volume with no key protectors' {
                 It 'Should return False' {
                     Mock -CommandName Get-BitLockerVolume -Verifiable -MockWith {
                         return @{
@@ -117,11 +117,11 @@ try
                         }
                     }
 
-                    TestBitlocker -MountPoint 'C:' -PrimaryProtector 'TpmProtector' | Should -Be $false
+                    Test-BitlockerEnabled -MountPoint 'C:' -PrimaryProtector 'TpmProtector' | Should -Be $false
                 }
             }
 
-            Context 'When TestBitlocker is called, AutoUnlock is requested on a non-OS disk, and AutoUnlock is not enabled' {
+            Context 'When Test-BitlockerEnabled is called, AutoUnlock is requested on a non-OS disk, and AutoUnlock is not enabled' {
                 It 'Should return False' {
                     Mock -CommandName Get-BitLockerVolume -Verifiable -MockWith {
                         return @{
@@ -131,7 +131,7 @@ try
                         }
                     }
 
-                    TestBitlocker -MountPoint 'C:' -PrimaryProtector 'TpmProtector' -AutoUnlock $true | Should -Be $false
+                    Test-BitlockerEnabled -MountPoint 'C:' -PrimaryProtector 'TpmProtector' -AutoUnlock $true | Should -Be $false
                 }
             }
 
@@ -143,80 +143,80 @@ try
 
             $fakePin = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList 'fakepin', (New-Object -TypeName System.Security.SecureString)
 
-            Context 'When TestBitlocker is called, a AdAccountOrGroupProtector protector is requested, and does not exist on the disk' {
+            Context 'When Test-BitlockerEnabled is called, a AdAccountOrGroupProtector protector is requested, and does not exist on the disk' {
                 It 'Should return False' {
                     Mock -CommandName Get-BitLockerVolume -Verifiable -MockWith { return $defaultBLV }
-                    Mock -CommandName ContainsKeyProtector -Verifiable -MockWith { return $false }
+                    Mock -CommandName Test-CollectionContainsKeyProtector -Verifiable -MockWith { return $false }
 
-                    TestBitlocker -MountPoint 'C:' -PrimaryProtector 'TpmProtector' -AdAccountOrGroupProtector $true | Should -Be $false
+                    Test-BitlockerEnabled -MountPoint 'C:' -PrimaryProtector 'TpmProtector' -AdAccountOrGroupProtector $true | Should -Be $false
                 }
             }
 
-            Context 'When TestBitlocker is called, a PasswordProtector protector is requested, and does not exist on the disk' {
+            Context 'When Test-BitlockerEnabled is called, a PasswordProtector protector is requested, and does not exist on the disk' {
                 It 'Should return False' {
                     Mock -CommandName Get-BitLockerVolume -Verifiable -MockWith { return $defaultBLV }
-                    Mock -CommandName ContainsKeyProtector -Verifiable -MockWith { return $false }
+                    Mock -CommandName Test-CollectionContainsKeyProtector -Verifiable -MockWith { return $false }
 
-                    TestBitlocker -MountPoint 'C:' -PrimaryProtector 'TpmProtector' -PasswordProtector $true | Should -Be $false
+                    Test-BitlockerEnabled -MountPoint 'C:' -PrimaryProtector 'TpmProtector' -PasswordProtector $true | Should -Be $false
                 }
             }
 
-            Context 'When TestBitlocker is called, a Pin protector is requested, and does not exist on the disk' {
+            Context 'When Test-BitlockerEnabled is called, a Pin protector is requested, and does not exist on the disk' {
                 It 'Should return False' {
                     Mock -CommandName Get-BitLockerVolume -Verifiable -MockWith { return $defaultBLV }
-                    Mock -CommandName ContainsKeyProtector -Verifiable -MockWith { return $false }
+                    Mock -CommandName Test-CollectionContainsKeyProtector -Verifiable -MockWith { return $false }
 
-                    TestBitlocker -MountPoint 'C:' -PrimaryProtector 'TpmProtector' -Pin $fakePin | Should -Be $false
+                    Test-BitlockerEnabled -MountPoint 'C:' -PrimaryProtector 'TpmProtector' -Pin $fakePin | Should -Be $false
                 }
             }
 
-            Context 'When TestBitlocker is called, a RecoveryKeyProtector protector is requested, and does not exist on the disk' {
+            Context 'When Test-BitlockerEnabled is called, a RecoveryKeyProtector protector is requested, and does not exist on the disk' {
                 It 'Should return False' {
                     Mock -CommandName Get-BitLockerVolume -Verifiable -MockWith { return $defaultBLV }
-                    Mock -CommandName ContainsKeyProtector -Verifiable -MockWith { return $false }
+                    Mock -CommandName Test-CollectionContainsKeyProtector -Verifiable -MockWith { return $false }
 
-                    TestBitlocker -MountPoint 'C:' -PrimaryProtector 'TpmProtector' -RecoveryKeyProtector $true | Should -Be $false
+                    Test-BitlockerEnabled -MountPoint 'C:' -PrimaryProtector 'TpmProtector' -RecoveryKeyProtector $true | Should -Be $false
                 }
             }
 
-            Context 'When TestBitlocker is called, a RecoveryPasswordProtector protector is requested, and does not exist on the disk' {
+            Context 'When Test-BitlockerEnabled is called, a RecoveryPasswordProtector protector is requested, and does not exist on the disk' {
                 It 'Should return False' {
                     Mock -CommandName Get-BitLockerVolume -Verifiable -MockWith { return $defaultBLV }
-                    Mock -CommandName ContainsKeyProtector -Verifiable -MockWith { return $false }
+                    Mock -CommandName Test-CollectionContainsKeyProtector -Verifiable -MockWith { return $false }
 
-                    TestBitlocker -MountPoint 'C:' -PrimaryProtector 'TpmProtector' -RecoveryPasswordProtector $true | Should -Be $false
+                    Test-BitlockerEnabled -MountPoint 'C:' -PrimaryProtector 'TpmProtector' -RecoveryPasswordProtector $true | Should -Be $false
                 }
             }
 
-            Context 'When TestBitlocker is called, a StartupKeyProtector protector is requested without a primary TPM protector, and does not exist on the disk' {
+            Context 'When Test-BitlockerEnabled is called, a StartupKeyProtector protector is requested without a primary TPM protector, and does not exist on the disk' {
                 It 'Should return False' {
                     Mock -CommandName Get-BitLockerVolume -Verifiable -MockWith { return $defaultBLV }
-                    Mock -CommandName ContainsKeyProtector -Verifiable -MockWith { return $false }
+                    Mock -CommandName Test-CollectionContainsKeyProtector -Verifiable -MockWith { return $false }
 
-                    TestBitlocker -MountPoint 'C:' -PrimaryProtector 'StartupKeyProtector' -StartupKeyProtector $true | Should -Be $false
+                    Test-BitlockerEnabled -MountPoint 'C:' -PrimaryProtector 'StartupKeyProtector' -StartupKeyProtector $true | Should -Be $false
                 }
             }
 
-            Context 'When TestBitlocker is called, a StartupKeyProtector protector is requested with a primary TPM protector, and does not exist on the disk' {
+            Context 'When Test-BitlockerEnabled is called, a StartupKeyProtector protector is requested with a primary TPM protector, and does not exist on the disk' {
                 It 'Should return False' {
                     Mock -CommandName Get-BitLockerVolume -Verifiable -MockWith { return $defaultBLV }
-                    Mock -CommandName ContainsKeyProtector -Verifiable -MockWith { return $false }
+                    Mock -CommandName Test-CollectionContainsKeyProtector -Verifiable -MockWith { return $false }
 
-                    TestBitlocker -MountPoint 'C:' -PrimaryProtector 'TpmProtector' -StartupKeyProtector $true | Should -Be $false
+                    Test-BitlockerEnabled -MountPoint 'C:' -PrimaryProtector 'TpmProtector' -StartupKeyProtector $true | Should -Be $false
                 }
             }
 
-            Context 'When TestBitlocker is called, a TpmProtector protector is requested, and does not exist on the disk' {
+            Context 'When Test-BitlockerEnabled is called, a TpmProtector protector is requested, and does not exist on the disk' {
                 It 'Should return False' {
                     Mock -CommandName Get-BitLockerVolume -Verifiable -MockWith { return $defaultBLV }
-                    Mock -CommandName ContainsKeyProtector -Verifiable -MockWith { return $false }
+                    Mock -CommandName Test-CollectionContainsKeyProtector -Verifiable -MockWith { return $false }
 
-                    TestBitlocker -MountPoint 'C:' -PrimaryProtector 'TpmProtector' -TpmProtector $true | Should -Be $false
+                    Test-BitlockerEnabled -MountPoint 'C:' -PrimaryProtector 'TpmProtector' -TpmProtector $true | Should -Be $false
                 }
             }
         }
 
-        Describe 'xBitlockerCommon\CheckForPreReqs' {
+        Describe 'xBitlockerCommon\Assert-HasPrereqsForBitlocker' {
             function Get-WindowsFeature
             {
                 param
@@ -253,12 +253,12 @@ try
 
                 It 'Should not generate any error messages' {
                     Mock -CommandName Write-Error
-                    CheckForPreReqs
+                    Assert-HasPrereqsForBitlocker
                     Assert-MockCalled -Command Write-Error -Exactly -Times 0 -Scope It
                 }
 
-                It 'Should run the CheckForPreReqs function without exceptions' {
-                    {CheckForPreReqs} | Should -Not -Throw
+                It 'Should run the Assert-HasPrereqsForBitlocker function without exceptions' {
+                    {Assert-HasPrereqsForBitlocker} | Should -Not -Throw
                 }
             }
 
@@ -283,12 +283,12 @@ try
 
                 It 'Should not generate any error messages' {
                     Mock -CommandName Write-Error
-                    CheckForPreReqs
+                    Assert-HasPrereqsForBitlocker
                     Assert-MockCalled -Command Write-Error -Exactly -Times 0 -Scope It
                 }
 
-                It 'Should run the CheckForPreReqs function without exceptions' {
-                    {CheckForPreReqs} | Should -Not -Throw
+                It 'Should run the Assert-HasPrereqsForBitlocker function without exceptions' {
+                    {Assert-HasPrereqsForBitlocker} | Should -Not -Throw
                 }
             }
 
@@ -308,28 +308,28 @@ try
                 Mock -CommandName Write-Error
 
                 It 'Should give an error that Bitlocker Windows Feature needs to be installed' {
-                    {CheckForPreReqs} | Should -Throw
+                    {Assert-HasPrereqsForBitlocker} | Should -Throw
                     Assert-MockCalled -Command Write-Error -Exactly -Times 1 -Scope It -ParameterFilter {
                         $Message -eq 'The Bitlocker feature needs to be installed before the xBitlocker module can be used'
                     }
                 }
 
                 It 'Should give an error that RSAT-Feature-Tools-BitLocker Windows Feature needs to be installed' {
-                    {CheckForPreReqs} | Should -Throw
+                    {Assert-HasPrereqsForBitlocker} | Should -Throw
                     Assert-MockCalled -Command Write-Error -Exactly -Times 1 -Scope It -ParameterFilter {
                         $Message -eq 'The RSAT-Feature-Tools-BitLocker feature needs to be installed before the xBitlocker module can be used'
                     }
                 }
 
                 It 'Should give an error that RSAT-Feature-Tools-BitLocker-RemoteAdminTool Windows Feature needs to be installed' {
-                    {CheckForPreReqs} | Should -Throw
+                    {Assert-HasPrereqsForBitlocker} | Should -Throw
                     Assert-MockCalled -Command Write-Error -Exactly -Times 1 -Scope It -ParameterFilter {
                         $Message -eq 'The RSAT-Feature-Tools-BitLocker-RemoteAdminTool feature needs to be installed before the xBitlocker module can be used'
                     }
                 }
 
-                It 'The CheckForPreReqs function should throw an exceptions about missing required Windows Features' {
-                    {CheckForPreReqs} | Should -Throw 'Required Bitlocker features need to be installed before xBitlocker can be used'
+                It 'The Assert-HasPrereqsForBitlocker function should throw an exceptions about missing required Windows Features' {
+                    {Assert-HasPrereqsForBitlocker} | Should -Throw 'Required Bitlocker features need to be installed before xBitlocker can be used'
                 }
             }
 
@@ -363,28 +363,28 @@ try
                 Mock -CommandName Write-Error
 
                 It 'Should give an error that Bitlocker Windows Feature needs to be installed' {
-                    {CheckForPreReqs} | Should -Throw
+                    {Assert-HasPrereqsForBitlocker} | Should -Throw
                     Assert-MockCalled -Command Write-Error -Exactly -Times 1 -Scope It -ParameterFilter {
                         $Message -eq 'The Bitlocker feature needs to be installed before the xBitlocker module can be used'
                     }
                 }
 
                 It 'Should give an error that RSAT-Feature-Tools-BitLocker Windows Feature needs to be installed' {
-                    {CheckForPreReqs} | Should -Throw
+                    {Assert-HasPrereqsForBitlocker} | Should -Throw
                     Assert-MockCalled -Command Write-Error -Exactly -Times 1 -Scope It -ParameterFilter {
                         $Message -eq 'The RSAT-Feature-Tools-BitLocker feature needs to be installed before the xBitlocker module can be used'
                     }
                 }
 
                 It 'Should not give an error that RSAT-Feature-Tools-BitLocker-RemoteAdminTool Windows Feature needs to be installed as this Windows Features is not available on Server Core.' {
-                    {CheckForPreReqs} | Should -Throw
+                    {Assert-HasPrereqsForBitlocker} | Should -Throw
                     Assert-MockCalled -Command Write-Error -Exactly -Times 0 -Scope It -ParameterFilter {
                         $Message -eq 'The RSAT-Feature-Tools-BitLocker-RemoteAdminTool feature needs to be installed before the xBitlocker module can be used'
                     }
                 }
 
-                It 'The CheckForPreReqs function should throw an exceptions about missing required Windows Features' {
-                    {CheckForPreReqs} | Should -Throw 'Required Bitlocker features need to be installed before xBitlocker can be used'
+                It 'The Assert-HasPrereqsForBitlocker function should throw an exceptions about missing required Windows Features' {
+                    {Assert-HasPrereqsForBitlocker} | Should -Throw 'Required Bitlocker features need to be installed before xBitlocker can be used'
                 }
             }
         }
@@ -437,7 +437,7 @@ try
             }
         }
 
-        Describe 'xBitLockerCommon\EnableBitlocker' -Tag 'Helper' {
+        Describe 'xBitLockerCommon\Enable-BitlockerInternal' -Tag 'Helper' {
             # Override Bitlocker cmdlets
             function Enable-Bitlocker {}
             function Enable-BitlockerAutoUnlock {}
@@ -460,15 +460,15 @@ try
                 VolumeType   = 'OperatingSystem'
             }
 
-            Context 'When EnableBitlocker is called Get-BitlockerVolume returns null' {
+            Context 'When Enable-BitlockerInternal is called Get-BitlockerVolume returns null' {
                 It 'Should throw an exception' {
                     Mock -CommandName Get-BitLockerVolume -Verifiable
 
-                    { EnableBitlocker -MountPoint 'C:' -Pin $fakePin -PrimaryProtector 'PasswordProtector' } | Should -Throw -ExpectedMessage 'Unable to find Bitlocker Volume associated with Mount Point'
+                    { Enable-BitlockerInternal -MountPoint 'C:' -Pin $fakePin -PrimaryProtector 'PasswordProtector' } | Should -Throw -ExpectedMessage 'Unable to find Bitlocker Volume associated with Mount Point'
                 }
             }
 
-            Context 'When EnableBitlocker is called with TpmProtector set to True and PrimaryProtector not set to TpmProtector' {
+            Context 'When Enable-BitlockerInternal is called with TpmProtector set to True and PrimaryProtector not set to TpmProtector' {
                 $badPrimaryProtectorCases = @(
                     @{
                         PrimaryProtector = 'PasswordProtector'
@@ -492,23 +492,23 @@ try
 
                     Mock -CommandName Get-BitLockerVolume -Verifiable -MockWith { return $encryptedBLV }
 
-                    { EnableBitlocker -MountPoint $mountPoint -TpmProtector $true -PrimaryProtector $PrimaryProtector } | Should -Throw -ExpectedMessage 'If TpmProtector is used, it must be the PrimaryProtector.'
+                    { Enable-BitlockerInternal -MountPoint $mountPoint -TpmProtector $true -PrimaryProtector $PrimaryProtector } | Should -Throw -ExpectedMessage 'If TpmProtector is used, it must be the PrimaryProtector.'
                 }
             }
 
-            Context 'When EnableBitlocker is called with Pin specified and TpmProtector not specified' {
+            Context 'When Enable-BitlockerInternal is called with Pin specified and TpmProtector not specified' {
                 It 'Should throw an exception' {
                     Mock -CommandName Get-BitLockerVolume -Verifiable -MockWith { return $encryptedBLV }
 
-                    { EnableBitlocker -MountPoint $mountPoint -Pin $fakePin -PrimaryProtector 'PasswordProtector' } | Should -Throw -ExpectedMessage 'A TpmProtector must be used if Pin is used.'
+                    { Enable-BitlockerInternal -MountPoint $mountPoint -Pin $fakePin -PrimaryProtector 'PasswordProtector' } | Should -Throw -ExpectedMessage 'A TpmProtector must be used if Pin is used.'
                 }
             }
 
-            Context 'When EnableBitlocker is called with Pin specified and TpmProtector not specified' {
+            Context 'When Enable-BitlockerInternal is called with Pin specified and TpmProtector not specified' {
                 It 'Should throw an exception' {
                     Mock -CommandName Get-BitLockerVolume -Verifiable -MockWith { return $encryptedBLV }
 
-                    { EnableBitlocker -MountPoint $mountPoint -Pin $fakePin -PrimaryProtector 'PasswordProtector' } | Should -Throw -ExpectedMessage 'A TpmProtector must be used if Pin is used.'
+                    { Enable-BitlockerInternal -MountPoint $mountPoint -Pin $fakePin -PrimaryProtector 'PasswordProtector' } | Should -Throw -ExpectedMessage 'A TpmProtector must be used if Pin is used.'
                 }
             }
 
@@ -526,27 +526,27 @@ try
                 StartupKeyProtector  = $true
             }
 
-            Context 'When EnableBitlocker is called and the volume is not yet encrypted' {
+            Context 'When Enable-BitlockerInternal is called and the volume is not yet encrypted' {
                 It 'Should enable Bitlocker with the correct key protectors and parameters' {
                     Mock -CommandName Get-BitLockerVolume -Verifiable -MockWith { return $decryptedOSBLV }
                     Mock -CommandName Enable-Bitlocker -Verifiable -MockWith { return $encryptedOSBLV }
                     Mock -CommandName Start-Sleep -Verifiable
                     Mock -CommandName Restart-Computer -Verifiable
 
-                    EnableBitlocker @defaultEnableParams
+                    Enable-BitlockerInternal @defaultEnableParams
                 }
             }
 
-            Context 'When EnableBitlocker is called, the volume is not yet encrypted, and Enable-Bitlocker does not return a result' {
+            Context 'When Enable-BitlockerInternal is called, the volume is not yet encrypted, and Enable-Bitlocker does not return a result' {
                 It 'Should throw an exception' {
                     Mock -CommandName Get-BitLockerVolume -Verifiable -MockWith { return $decryptedOSBLV }
                     Mock -CommandName Enable-Bitlocker -Verifiable
 
-                    { EnableBitlocker @defaultEnableParams } | Should -Throw -ExpectedMessage 'Failed to successfully enable Bitlocker on MountPoint'
+                    { Enable-BitlockerInternal @defaultEnableParams } | Should -Throw -ExpectedMessage 'Failed to successfully enable Bitlocker on MountPoint'
                 }
             }
 
-            Context 'When EnableBitlocker is called, the volume is not yet encrypted and is not an OS drive, and AutoUnlock is specified' {
+            Context 'When Enable-BitlockerInternal is called, the volume is not yet encrypted and is not an OS drive, and AutoUnlock is specified' {
                 It 'Should enable Bitlocker with the correct key protectors and parameters and enable AutoUnlock' {
                     Mock -CommandName Get-BitLockerVolume -Verifiable -MockWith {
                         return @{
@@ -559,13 +559,13 @@ try
 
                     $defaultEnableParams.Add('AutoUnlock', $true)
 
-                    EnableBitlocker @defaultEnableParams
+                    Enable-BitlockerInternal @defaultEnableParams
 
                     $defaultEnableParams.Remove('AutoUnlock')
                 }
             }
 
-            Context 'When EnableBitlocker is called with TPM only and the volume is not yet encrypted' {
+            Context 'When Enable-BitlockerInternal is called with TPM only and the volume is not yet encrypted' {
                 It 'Should enable Bitlocker with the correct key protectors and parameters' {
                     Mock -CommandName Get-BitLockerVolume -Verifiable -MockWith { return $decryptedOSBLV }
                     Mock -CommandName Enable-Bitlocker -Verifiable -MockWith { return $encryptedBLV }
@@ -576,11 +576,11 @@ try
                         TpmProtector     = $true
                     }
 
-                    EnableBitlocker @tpmOnlyEnableParams
+                    Enable-BitlockerInternal @tpmOnlyEnableParams
                 }
             }
 
-            Context 'When EnableBitlocker is called with TPM and pin only and the volume is not yet encrypted' {
+            Context 'When Enable-BitlockerInternal is called with TPM and pin only and the volume is not yet encrypted' {
                 It 'Should enable Bitlocker with the correct key protectors and parameters' {
                     Mock -CommandName Get-BitLockerVolume -Verifiable -MockWith { return $decryptedOSBLV }
                     Mock -CommandName Enable-Bitlocker -Verifiable -MockWith { return $encryptedBLV }
@@ -592,11 +592,11 @@ try
                         Pin              = $fakePin
                     }
 
-                    EnableBitlocker @tpmAndPinOnlyEnableParams
+                    Enable-BitlockerInternal @tpmAndPinOnlyEnableParams
                 }
             }
 
-            Context 'When EnableBitlocker is called with TPM and pin only and the volume is not yet encrypted' {
+            Context 'When Enable-BitlockerInternal is called with TPM and pin only and the volume is not yet encrypted' {
                 It 'Should enable Bitlocker with the correct key protectors and parameters' {
                     Mock -CommandName Get-BitLockerVolume -Verifiable -MockWith { return $decryptedOSBLV }
                     Mock -CommandName Enable-Bitlocker -Verifiable -MockWith { return $encryptedBLV }
@@ -609,11 +609,11 @@ try
                         StartupKeyPath      = 'C:\'
                     }
 
-                    EnableBitlocker @tpmAndStartupOnlyEnableParams
+                    Enable-BitlockerInternal @tpmAndStartupOnlyEnableParams
                 }
             }
 
-            Context 'When EnableBitlocker is called with a Password Protector and the volume is not yet encrypted' {
+            Context 'When Enable-BitlockerInternal is called with a Password Protector and the volume is not yet encrypted' {
                 It 'Should enable Bitlocker with the correct key protectors and parameters' {
                     Mock -CommandName Get-BitLockerVolume -MockWith { return $decryptedOSBLV }
                     Mock -CommandName Enable-Bitlocker -MockWith { return $encryptedBLV }
@@ -625,11 +625,11 @@ try
                         Password          = $fakePin
                     }
 
-                    EnableBitlocker @passwordEnableParams
+                    Enable-BitlockerInternal @passwordEnableParams
                 }
             }
 
-            Context 'When EnableBitlocker is called with a Recovery Password Protector and the volume is not yet encrypted' {
+            Context 'When Enable-BitlockerInternal is called with a Recovery Password Protector and the volume is not yet encrypted' {
                 It 'Should enable Bitlocker with the correct key protectors and parameters' {
                     Mock -CommandName Get-BitLockerVolume -MockWith { return $decryptedOSBLV }
                     Mock -CommandName Enable-Bitlocker -MockWith { return $encryptedBLV }
@@ -641,11 +641,11 @@ try
                         Password                  = $fakePin
                     }
 
-                    EnableBitlocker @recoveryPasswordEnableParams
+                    Enable-BitlockerInternal @recoveryPasswordEnableParams
                 }
             }
 
-            Context 'When EnableBitlocker is called with a StartupKey Protector and the volume is not yet encrypted' {
+            Context 'When Enable-BitlockerInternal is called with a StartupKey Protector and the volume is not yet encrypted' {
                 It 'Should enable Bitlocker with the correct key protectors and parameters' {
                     Mock -CommandName Get-BitLockerVolume -MockWith { return $decryptedOSBLV }
                     Mock -CommandName Enable-Bitlocker -MockWith { return $encryptedBLV }
@@ -657,7 +657,7 @@ try
                         StartupKeyPath      = 'C:\Path'
                     }
 
-                    EnableBitlocker @startupKeyEnableParams
+                    Enable-BitlockerInternal @startupKeyEnableParams
                 }
             }
         }
@@ -682,55 +682,55 @@ try
             Context 'When Add-MissingBitLockerKeyProtector is called, the AdAccountOrGroupProtector protector is requested but not yet present on the volume, and is not the PrimaryKeyProtector' {
                 It 'Should add the AdAccountOrGroupProtector protector' {
                     Mock -CommandName Get-BitLockerVolume -Verifiable -MockWith { return $encryptedBLV }
-                    Mock -CommandName ContainsKeyProtector -Verifiable -MockWith { return $false}
+                    Mock -CommandName Test-CollectionContainsKeyProtector -Verifiable -MockWith { return $false}
                     Mock -CommandName Add-BitLockerKeyProtector -Verifiable -ParameterFilter {$MountPoint -eq 'AdAccountOrGroupProtector'}
 
-                    EnableBitlocker -MountPoint 'AdAccountOrGroupProtector' -Pin $fakePin -PrimaryProtector 'TpmProtector' -TpmProtector $true -AdAccountOrGroupProtector $true
+                    Enable-BitlockerInternal -MountPoint 'AdAccountOrGroupProtector' -Pin $fakePin -PrimaryProtector 'TpmProtector' -TpmProtector $true -AdAccountOrGroupProtector $true
                 }
             }
 
             Context 'When Add-MissingBitLockerKeyProtector is called, the PasswordProtector protector is requested but not yet present on the volume, and is not the PrimaryKeyProtector' {
                 It 'Should add the PasswordProtector protector' {
                     Mock -CommandName Get-BitLockerVolume -Verifiable -MockWith { return $encryptedBLV }
-                    Mock -CommandName ContainsKeyProtector -Verifiable -MockWith { return $false}
+                    Mock -CommandName Test-CollectionContainsKeyProtector -Verifiable -MockWith { return $false}
                     Mock -CommandName Add-BitLockerKeyProtector -Verifiable -ParameterFilter {$MountPoint -eq 'PasswordProtector'}
 
-                    EnableBitlocker -MountPoint 'PasswordProtector' -Pin $fakePin -PrimaryProtector 'TpmProtector' -TpmProtector $true -PasswordProtector $true
+                    Enable-BitlockerInternal -MountPoint 'PasswordProtector' -Pin $fakePin -PrimaryProtector 'TpmProtector' -TpmProtector $true -PasswordProtector $true
                 }
             }
 
             Context 'When Add-MissingBitLockerKeyProtector is called, the RecoveryKeyProtector protector is requested but not yet present on the volume, and is not the PrimaryKeyProtector' {
                 It 'Should add the RecoveryKeyProtector protector' {
                     Mock -CommandName Get-BitLockerVolume -Verifiable -MockWith { return $encryptedBLV }
-                    Mock -CommandName ContainsKeyProtector -Verifiable -MockWith { return $false}
+                    Mock -CommandName Test-CollectionContainsKeyProtector -Verifiable -MockWith { return $false}
                     Mock -CommandName Add-BitLockerKeyProtector -Verifiable -ParameterFilter {$MountPoint -eq 'RecoveryKeyProtector'}
 
-                    EnableBitlocker -MountPoint 'RecoveryKeyProtector' -Pin $fakePin -PrimaryProtector 'TpmProtector' -TpmProtector $true -RecoveryKeyProtector $true
+                    Enable-BitlockerInternal -MountPoint 'RecoveryKeyProtector' -Pin $fakePin -PrimaryProtector 'TpmProtector' -TpmProtector $true -RecoveryKeyProtector $true
                 }
             }
 
             Context 'When Add-MissingBitLockerKeyProtector is called, the RecoveryPasswordProtector protector is requested but not yet present on the volume, and is not the PrimaryKeyProtector' {
                 It 'Should add the RecoveryPasswordProtector protector' {
                     Mock -CommandName Get-BitLockerVolume -Verifiable -MockWith { return $encryptedBLV }
-                    Mock -CommandName ContainsKeyProtector -Verifiable -MockWith { return $false}
+                    Mock -CommandName Test-CollectionContainsKeyProtector -Verifiable -MockWith { return $false}
                     Mock -CommandName Add-BitLockerKeyProtector -Verifiable -ParameterFilter {$MountPoint -eq 'RecoveryPasswordProtector'}
 
-                    EnableBitlocker -MountPoint 'RecoveryPasswordProtector' -Pin $fakePin -PrimaryProtector 'TpmProtector' -TpmProtector $true -RecoveryPasswordProtector $true
+                    Enable-BitlockerInternal -MountPoint 'RecoveryPasswordProtector' -Pin $fakePin -PrimaryProtector 'TpmProtector' -TpmProtector $true -RecoveryPasswordProtector $true
                 }
             }
 
             Context 'When Add-MissingBitLockerKeyProtector is called, the StartupKeyProtector protector is requested but not yet present on the volume, and is not the PrimaryKeyProtector' {
                 It 'Should add the StartupKeyProtector protector' {
                     Mock -CommandName Get-BitLockerVolume -Verifiable -MockWith { return $encryptedBLV }
-                    Mock -CommandName ContainsKeyProtector -Verifiable -MockWith { return $false}
+                    Mock -CommandName Test-CollectionContainsKeyProtector -Verifiable -MockWith { return $false}
                     Mock -CommandName Add-BitLockerKeyProtector -Verifiable -ParameterFilter {$MountPoint -eq 'StartupKeyProtector'}
 
-                    EnableBitlocker -MountPoint 'StartupKeyProtector' -PrimaryProtector 'RecoveryPasswordProtector' -RecoveryPasswordProtector $true -StartupKeyProtector $true
+                    Enable-BitlockerInternal -MountPoint 'StartupKeyProtector' -PrimaryProtector 'RecoveryPasswordProtector' -RecoveryPasswordProtector $true -StartupKeyProtector $true
                 }
             }
         }
 
-        Describe 'xBitLockerCommon\ContainsKeyProtector' -Tag 'Helper' {
+        Describe 'xBitLockerCommon\Test-CollectionContainsKeyProtector' -Tag 'Helper' {
             $testKeyProtectorCollection = @(
                 @{
                     KeyProtectorType = 'RecoveryPassword'
@@ -745,49 +745,49 @@ try
                 }
             )
 
-            Context 'When ContainsKeyProtector is called and the target KeyProtector exists in the collection' {
+            Context 'When Test-CollectionContainsKeyProtector is called and the target KeyProtector exists in the collection' {
                 It 'Should return True' {
-                    ContainsKeyProtector -Type 'AdAccountOrGroup' -KeyProtectorCollection $testKeyProtectorCollection | Should -Be $true
+                    Test-CollectionContainsKeyProtector -Type 'AdAccountOrGroup' -KeyProtectorCollection $testKeyProtectorCollection | Should -Be $true
                 }
             }
 
-            Context 'When ContainsKeyProtector is called and the target KeyProtector does not exist in the collection' {
+            Context 'When Test-CollectionContainsKeyProtector is called and the target KeyProtector does not exist in the collection' {
                 It 'Should return False' {
-                    ContainsKeyProtector -Type 'AdAccountOrGroup2' -KeyProtectorCollection $testKeyProtectorCollection | Should -Be $false
+                    Test-CollectionContainsKeyProtector -Type 'AdAccountOrGroup2' -KeyProtectorCollection $testKeyProtectorCollection | Should -Be $false
                 }
             }
 
-            Context 'When ContainsKeyProtector is called with the StartsWith switch and the target KeyProtector exists in the collection' {
+            Context 'When Test-CollectionContainsKeyProtector is called with the StartsWith switch and the target KeyProtector exists in the collection' {
                 It 'Should return True' {
-                    ContainsKeyProtector -Type 'AdAccount' -KeyProtectorCollection $testKeyProtectorCollection -StartsWith $true | Should -Be $true
+                    Test-CollectionContainsKeyProtector -Type 'AdAccount' -KeyProtectorCollection $testKeyProtectorCollection -StartsWith $true | Should -Be $true
                 }
             }
 
-            Context 'When ContainsKeyProtector is called with the StartsWith switch and the target KeyProtector does not exist in the collection' {
+            Context 'When Test-CollectionContainsKeyProtector is called with the StartsWith switch and the target KeyProtector does not exist in the collection' {
                 It 'Should return False' {
-                    ContainsKeyProtector -Type 'Account' -KeyProtectorCollection $testKeyProtectorCollection -StartsWith $true | Should -Be $false
+                    Test-CollectionContainsKeyProtector -Type 'Account' -KeyProtectorCollection $testKeyProtectorCollection -StartsWith $true | Should -Be $false
                 }
             }
 
-            Context 'When ContainsKeyProtector is called with the Contains switch and the target KeyProtector exists in the collection' {
+            Context 'When Test-CollectionContainsKeyProtector is called with the Contains switch and the target KeyProtector exists in the collection' {
                 It 'Should return True' {
-                    ContainsKeyProtector -Type 'Account' -KeyProtectorCollection $testKeyProtectorCollection -Contains $true | Should -Be $true
+                    Test-CollectionContainsKeyProtector -Type 'Account' -KeyProtectorCollection $testKeyProtectorCollection -Contains $true | Should -Be $true
                 }
             }
 
-            Context 'When ContainsKeyProtector is called with the Contains switch and the target KeyProtector does not exist in the collection' {
+            Context 'When Test-CollectionContainsKeyProtector is called with the Contains switch and the target KeyProtector does not exist in the collection' {
                 It 'Should return False' {
-                    ContainsKeyProtector -Type 'NotInCollection' -KeyProtectorCollection $testKeyProtectorCollection -Contains $true | Should -Be $false
+                    Test-CollectionContainsKeyProtector -Type 'NotInCollection' -KeyProtectorCollection $testKeyProtectorCollection -Contains $true | Should -Be $false
                 }
             }
         }
 
-        Describe 'xBitLockerCommon\AddParameters' -Tag 'Helper' {
+        Describe 'xBitLockerCommon\Add-ToPSBoundParametersFromHashtable' -Tag 'Helper' {
             AfterEach {
                 Assert-VerifiableMock
             }
 
-            Context 'When AddParameters is called, a parameter is added, and a parameter is changed' {
+            Context 'When Add-ToPSBoundParametersFromHashtable is called, a parameter is added, and a parameter is changed' {
                 It 'Should add a new parameter and change the existing parameter' {
                     $param1    = 'abc'
                     $param2    = $null
@@ -806,7 +806,7 @@ try
                         Param4 = $param4
                     }
 
-                    AddParameters -PSBoundParametersIn $psBoundParametersIn -ParamsToAdd $paramsToAdd
+                    Add-ToPSBoundParametersFromHashtable -PSBoundParametersIn $psBoundParametersIn -ParamsToAdd $paramsToAdd
 
                     $psBoundParametersIn.ContainsKey('Param1') -and $psBoundParametersIn['Param1'] -eq $param1 | Should -Be $true
                     $psBoundParametersIn.ContainsKey('Param2') -and $psBoundParametersIn['Param2'] -eq $param2new | Should -Be $true
@@ -816,19 +816,19 @@ try
             }
         }
 
-        Describe 'xBitLockerCommon\RemoveParameters' -Tag 'Helper' {
+        Describe 'xBitLockerCommon\Remove-FromPSBoundParametersUsingHashtable' -Tag 'Helper' {
             AfterEach {
                 Assert-VerifiableMock
             }
 
-            Context 'When RemoveParameters is called and both ParamsToKeep and ParamsToRemove are specified' {
+            Context 'When Remove-FromPSBoundParametersUsingHashtable is called and both ParamsToKeep and ParamsToRemove are specified' {
                 It 'Should throw an exception' {
-                    { RemoveParameters -PSBoundParametersIn @{} -ParamsToKeep @('Param1') -ParamsToRemove @('Param2') } | `
+                    { Remove-FromPSBoundParametersUsingHashtable -PSBoundParametersIn @{} -ParamsToKeep @('Param1') -ParamsToRemove @('Param2') } | `
                         Should -Throw -ExpectedMessage 'Parameter set cannot be resolved using the specified named parameters.'
                 }
             }
 
-            Context 'When RemoveParameters is called with ParamsToKeep' {
+            Context 'When Remove-FromPSBoundParametersUsingHashtable is called with ParamsToKeep' {
                 It 'Should remove any parameter not specified in ParamsToKeep' {
                     $psBoundParametersIn = @{
                         Param1 = 1
@@ -838,7 +838,7 @@ try
 
                     $paramsToKeep = @('Param1', 'Param2')
 
-                    RemoveParameters -PSBoundParametersIn $psBoundParametersIn -ParamsToKeep $paramsToKeep
+                    Remove-FromPSBoundParametersUsingHashtable -PSBoundParametersIn $psBoundParametersIn -ParamsToKeep $paramsToKeep
 
                     $psBoundParametersIn.ContainsKey('Param1') | Should -Be $true
                     $psBoundParametersIn.ContainsKey('Param2') | Should -Be $true
@@ -846,7 +846,7 @@ try
                 }
             }
 
-            Context 'When RemoveParameters is called with ParamsToRemove' {
+            Context 'When Remove-FromPSBoundParametersUsingHashtable is called with ParamsToRemove' {
                 It 'Should remove any parameter specified in ParamsToRemove' {
                     $psBoundParametersIn = @{
                         Param1 = 1
@@ -859,7 +859,7 @@ try
                         'param2'
                     )
 
-                    RemoveParameters -PSBoundParametersIn $psBoundParametersIn -ParamsToRemove $paramsToRemove
+                    Remove-FromPSBoundParametersUsingHashtable -PSBoundParametersIn $psBoundParametersIn -ParamsToRemove $paramsToRemove
 
                     $psBoundParametersIn.ContainsKey('Param1') | Should -Be $false
                     $psBoundParametersIn.ContainsKey('Param2') | Should -Be $false

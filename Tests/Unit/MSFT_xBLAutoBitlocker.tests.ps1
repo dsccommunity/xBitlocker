@@ -45,11 +45,11 @@ try
         }
 
         # Override Helper functions
-        function CheckForPreReqs {}
-        function RemoveParameters {}
-        function AddParameters {}
-        function TestBitlocker {}
-        function EnableBitlocker {}
+        function Assert-HasPrereqsForBitlocker {}
+        function Remove-FromPSBoundParametersUsingHashtable {}
+        function Add-ToPSBoundParametersFromHashtable {}
+        function Test-BitlockerEnabled {}
+        function Enable-BitlockerInternal {}
 
         Describe 'MSFT_xBLAutoBitlocker\Get-TargetResource' -Tag 'Get' {
             AfterEach {
@@ -60,9 +60,9 @@ try
             $testPrimaryProtector = 'TpmProtector'
 
             Mock -CommandName Import-Module -Verifiable
-            Mock -CommandName CheckForPreReqs -Verifiable
+            Mock -CommandName Assert-HasPrereqsForBitlocker -Verifiable
 
-            Context 'When Get-TargetResource is called and CheckForPrereqs succeeds' {
+            Context 'When Get-TargetResource is called and Assert-HasPrereqsForBitlocker succeeds' {
                 It 'Should return a Hashtable with the input resource DriveType' {
                     $getResult = Get-TargetResource -DriveType $testDriveType -PrimaryProtector $testPrimaryProtector
                     $getResult | Should -Be -Not $null
@@ -80,47 +80,47 @@ try
             $testPrimaryProtector = 'TpmProtector'
 
             Mock -CommandName Import-Module -Verifiable
-            Mock -CommandName CheckForPreReqs -Verifiable
+            Mock -CommandName Assert-HasPrereqsForBitlocker -Verifiable
 
-            Context 'When Set-TargetResource is called, CheckForPrereqs succeeds, and GetAutoBitlockerStatus returns null' {
-                Mock -CommandName GetAutoBitlockerStatus -Verifiable
+            Context 'When Set-TargetResource is called, Assert-HasPrereqsForBitlocker succeeds, and Get-AutoBitlockerStatus returns null' {
+                Mock -CommandName Get-AutoBitlockerStatus -Verifiable
 
                 It 'Should throw an exception' {
                     { Set-TargetResource -DriveType $testDriveType -PrimaryProtector $testPrimaryProtector } | Should -Throw -ExpectedMessage 'No Auto Bitlocker volumes were found'
                 }
             }
 
-            Context 'When Set-TargetResource is called, CheckForPrereqs succeeds, GetAutoBitlockerStatus returns a valid hashtable, and TestBitlocker returns False' {
-                Mock -CommandName GetAutoBitlockerStatus -Verifiable -MockWith {
+            Context 'When Set-TargetResource is called, Assert-HasPrereqsForBitlocker succeeds, Get-AutoBitlockerStatus returns a valid hashtable, and Test-BitlockerEnabled returns False' {
+                Mock -CommandName Get-AutoBitlockerStatus -Verifiable -MockWith {
                     return @{
                         Keys = @('Volume1')
                     }
                 }
-                Mock -CommandName RemoveParameters -Verifiable
-                Mock -CommandName AddParameters -Verifiable
-                Mock -CommandName TestBitlocker -Verifiable -MockWith { return $false }
-                Mock -CommandName EnableBitlocker -Verifiable
+                Mock -CommandName Remove-FromPSBoundParametersUsingHashtable -Verifiable
+                Mock -CommandName Add-ToPSBoundParametersFromHashtable -Verifiable
+                Mock -CommandName Test-BitlockerEnabled -Verifiable -MockWith { return $false }
+                Mock -CommandName Enable-BitlockerInternal -Verifiable
 
                 It 'Should enable Bitlocker' {
                     Set-TargetResource -DriveType $testDriveType -PrimaryProtector $testPrimaryProtector
                 }
             }
 
-            Context 'When Set-TargetResource is called, CheckForPrereqs succeeds, GetAutoBitlockerStatus returns a valid hashtable, and TestBitlocker returns True' {
-                Mock -CommandName GetAutoBitlockerStatus -Verifiable -MockWith {
+            Context 'When Set-TargetResource is called, Assert-HasPrereqsForBitlocker succeeds, Get-AutoBitlockerStatus returns a valid hashtable, and Test-BitlockerEnabled returns True' {
+                Mock -CommandName Get-AutoBitlockerStatus -Verifiable -MockWith {
                     return @{
                         Keys = @('Volume1')
                     }
                 }
-                Mock -CommandName RemoveParameters -Verifiable
-                Mock -CommandName AddParameters -Verifiable
-                Mock -CommandName TestBitlocker -Verifiable -MockWith { return $true }
-                Mock -CommandName EnableBitlocker
+                Mock -CommandName Remove-FromPSBoundParametersUsingHashtable -Verifiable
+                Mock -CommandName Add-ToPSBoundParametersFromHashtable -Verifiable
+                Mock -CommandName Test-BitlockerEnabled -Verifiable -MockWith { return $true }
+                Mock -CommandName Enable-BitlockerInternal
 
                 It 'Should not enable Bitlocker' {
                     Set-TargetResource -DriveType $testDriveType -PrimaryProtector $testPrimaryProtector
 
-                    Assert-MockCalled -CommandName EnableBitlocker -Times 0
+                    Assert-MockCalled -CommandName Enable-BitlockerInternal -Times 0
                 }
             }
         }
@@ -134,10 +134,10 @@ try
             $testPrimaryProtector = 'TpmProtector'
 
             Mock -CommandName Import-Module -Verifiable
-            Mock -CommandName CheckForPreReqs -Verifiable
+            Mock -CommandName Assert-HasPrereqsForBitlocker -Verifiable
 
-            Context 'When Test-TargetResource is called, CheckForPrereqs succeeds, and GetAutoBitlockerStatus returns null' {
-                Mock -CommandName GetAutoBitlockerStatus -Verifiable
+            Context 'When Test-TargetResource is called, Assert-HasPrereqsForBitlocker succeeds, and Get-AutoBitlockerStatus returns null' {
+                Mock -CommandName Get-AutoBitlockerStatus -Verifiable
                 Mock -CommandName Write-Error -Verifiable
 
                 It 'Should write an error and return false' {
@@ -145,30 +145,30 @@ try
                 }
             }
 
-            Context 'When Test-TargetResource is called, CheckForPrereqs succeeds, GetAutoBitlockerStatus returns a valid hashtable, and TestBitlocker returns False' {
-                Mock -CommandName GetAutoBitlockerStatus -Verifiable -MockWith {
+            Context 'When Test-TargetResource is called, Assert-HasPrereqsForBitlocker succeeds, Get-AutoBitlockerStatus returns a valid hashtable, and Test-BitlockerEnabled returns False' {
+                Mock -CommandName Get-AutoBitlockerStatus -Verifiable -MockWith {
                     return @{
                         Keys = @('Volume1')
                     }
                 }
-                Mock -CommandName RemoveParameters -Verifiable
-                Mock -CommandName AddParameters -Verifiable
-                Mock -CommandName TestBitlocker -Verifiable -MockWith { return $false }
+                Mock -CommandName Remove-FromPSBoundParametersUsingHashtable -Verifiable
+                Mock -CommandName Add-ToPSBoundParametersFromHashtable -Verifiable
+                Mock -CommandName Test-BitlockerEnabled -Verifiable -MockWith { return $false }
 
                 It 'Should return False' {
                     Test-TargetResource -DriveType $testDriveType -PrimaryProtector $testPrimaryProtector | Should -Be $false
                 }
             }
 
-            Context 'When Test-TargetResource is called, CheckForPrereqs succeeds, GetAutoBitlockerStatus returns a valid hashtable, and TestBitlocker returns True' {
-                Mock -CommandName GetAutoBitlockerStatus -Verifiable -MockWith {
+            Context 'When Test-TargetResource is called, Assert-HasPrereqsForBitlocker succeeds, Get-AutoBitlockerStatus returns a valid hashtable, and Test-BitlockerEnabled returns True' {
+                Mock -CommandName Get-AutoBitlockerStatus -Verifiable -MockWith {
                     return @{
                         Keys = @('Volume1')
                     }
                 }
-                Mock -CommandName RemoveParameters -Verifiable
-                Mock -CommandName AddParameters -Verifiable
-                Mock -CommandName TestBitlocker -Verifiable -MockWith { return $true }
+                Mock -CommandName Remove-FromPSBoundParametersUsingHashtable -Verifiable
+                Mock -CommandName Add-ToPSBoundParametersFromHashtable -Verifiable
+                Mock -CommandName Test-BitlockerEnabled -Verifiable -MockWith { return $true }
 
                 It 'Should return True' {
                     Test-TargetResource -DriveType $testDriveType -PrimaryProtector $testPrimaryProtector | Should -Be $true
@@ -176,7 +176,7 @@ try
             }
         }
 
-        Describe 'MSFT_xBLAutoBitlocker\GetAutoBitlockerStatus' {
+        Describe 'MSFT_xBLAutoBitlocker\Get-AutoBitlockerStatus' {
         # Get-BitlockerVolume is used to obtain list of volumes in the system and their current encryption status
             Mock `
                 -CommandName Get-BitlockerVolume `
@@ -379,121 +379,121 @@ try
             Context 'When Volume C: Reports as OS Volume' {
 
                 It 'Should Not Be In The List of Eligible Fixed Volumes' {
-                    (GetAutoBitlockerStatus -DriveType 'Fixed' -PrimaryProtector TpmProtector|Select-Object -ExpandProperty Keys)|Should -Not -Contain 'C:'
+                    (Get-AutoBitlockerStatus -DriveType 'Fixed' -PrimaryProtector TpmProtector|Select-Object -ExpandProperty Keys)|Should -Not -Contain 'C:'
                 }
 
                 It 'Should Not Be In The List of Eligible Removable Volumes' {
-                    (GetAutoBitlockerStatus -DriveType 'Removable' -PrimaryProtector TpmProtector|Select-Object -ExpandProperty Keys)|Should -Not -Contain 'C:'
+                    (Get-AutoBitlockerStatus -DriveType 'Removable' -PrimaryProtector TpmProtector|Select-Object -ExpandProperty Keys)|Should -Not -Contain 'C:'
                 }
             }
 
             Context 'When Volume D: Reports Fixed to OS, but Removable to Bitlocker' {
 
                 It 'Should Not Be In The List of Eligible Fixed Volumes' {
-                    (GetAutoBitlockerStatus -DriveType 'Fixed' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Not -Contain 'D:'
+                    (Get-AutoBitlockerStatus -DriveType 'Fixed' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Not -Contain 'D:'
                 }
 
                 It 'Should Be In The List of Eligible Removable Volumes' {
-                    (GetAutoBitlockerStatus -DriveType 'Removable' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Contain 'D:'
+                    (Get-AutoBitlockerStatus -DriveType 'Removable' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Contain 'D:'
                 }
             }
 
             Context 'When Volume E: Reports Fixed to OS and Bitlocker' {
 
                 It 'Should Be In The List of Eligible Fixed Volumes' {
-                    (GetAutoBitlockerStatus -DriveType 'Fixed' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Contain 'E:'
+                    (Get-AutoBitlockerStatus -DriveType 'Fixed' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Contain 'E:'
                 }
 
                 It 'Should Not Be In The List of Eligible Removable Volumes' {
-                    (GetAutoBitlockerStatus -DriveType 'Removable' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Not -Contain 'E:'
+                    (Get-AutoBitlockerStatus -DriveType 'Removable' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Not -Contain 'E:'
                 }
             }
 
             Context 'When Volume F: Reports as Removable to OS and Bitlocker' {
 
                 It 'Should Not Be In The List of Eligible Fixed Volumes' {
-                    (GetAutoBitlockerStatus -DriveType 'Fixed' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Not -Contain 'F:'
+                    (Get-AutoBitlockerStatus -DriveType 'Fixed' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Not -Contain 'F:'
                 }
 
                 It 'Should Be In The List of Eligible Removable Volumes' {
-                    (GetAutoBitlockerStatus -DriveType 'Removable' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Contain 'F:'
+                    (Get-AutoBitlockerStatus -DriveType 'Removable' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Contain 'F:'
                 }
             }
 
             Context 'When Volume \\?\Volume{00000000-0000-0000-0000-000000000001}\ Reports Fixed to OS, but Removable to Bitlocker' {
 
                 It 'Should Not Be In The List of Eligible Fixed Volumes' {
-                    (GetAutoBitlockerStatus -DriveType 'Fixed' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Not -Contain '\\?\Volume{00000000-0000-0000-0000-000000000001}\'
+                    (Get-AutoBitlockerStatus -DriveType 'Fixed' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Not -Contain '\\?\Volume{00000000-0000-0000-0000-000000000001}\'
                 }
 
                 It 'Should Be In The List of Eligible Removable Volumes' {
-                    (GetAutoBitlockerStatus -DriveType 'Removable' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Contain '\\?\Volume{00000000-0000-0000-0000-000000000001}\'
+                    (Get-AutoBitlockerStatus -DriveType 'Removable' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Contain '\\?\Volume{00000000-0000-0000-0000-000000000001}\'
                 }
             }
 
             Context 'When Volume \\?\Volume{00000000-0000-0000-0000-000000000002}\ Reports Fixed to OS and Bitlocker' {
 
                 It 'Should Be In The List of Eligible Fixed Volumes' {
-                    (GetAutoBitlockerStatus -DriveType 'Fixed' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Contain '\\?\Volume{00000000-0000-0000-0000-000000000002}\'
+                    (Get-AutoBitlockerStatus -DriveType 'Fixed' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Contain '\\?\Volume{00000000-0000-0000-0000-000000000002}\'
                 }
 
                 It 'Should Not Be In The List of Eligible Removable Volumes' {
-                    (GetAutoBitlockerStatus -DriveType 'Removable' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Not -Contain '\\?\Volume{00000000-0000-0000-0000-000000000002}\'
+                    (Get-AutoBitlockerStatus -DriveType 'Removable' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Not -Contain '\\?\Volume{00000000-0000-0000-0000-000000000002}\'
                 }
             }
 
             Context 'When Volume \\?\Volume{00000000-0000-0000-0000-000000000003}\ Reports as Removable to OS and Bitlocker' {
 
                 It 'Should Not Be In The List of Eligible Fixed Volumes' {
-                    (GetAutoBitlockerStatus -DriveType 'Fixed' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Not -Contain '\\?\Volume{00000000-0000-0000-0000-000000000003}\'
+                    (Get-AutoBitlockerStatus -DriveType 'Fixed' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Not -Contain '\\?\Volume{00000000-0000-0000-0000-000000000003}\'
                 }
 
                 It 'Should Be In The List of Eligible Removable Volumes' {
-                    (GetAutoBitlockerStatus -DriveType 'Removable' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Contain '\\?\Volume{00000000-0000-0000-0000-000000000003}\'
+                    (Get-AutoBitlockerStatus -DriveType 'Removable' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Contain '\\?\Volume{00000000-0000-0000-0000-000000000003}\'
                 }
             }
 
             Context 'When MinDiskCapacity Parameter is Defined at 100 GB for Fixed Disks' {
 
                 It 'Should Exclude E: from The List of Eligible Fixed Volumes' {
-                    (GetAutoBitlockerStatus -DriveType 'Fixed' -PrimaryProtector RecoveryPasswordProtector -MinDiskCapacityGB 100|Select-Object -ExpandProperty Keys)|Should -Not -Contain 'E:'
+                    (Get-AutoBitlockerStatus -DriveType 'Fixed' -PrimaryProtector RecoveryPasswordProtector -MinDiskCapacityGB 100|Select-Object -ExpandProperty Keys)|Should -Not -Contain 'E:'
                 }
 
                 It 'Should Include Volume \\?\Volume{00000000-0000-0000-0000-000000000002}\ In The List of Eligible Removable Volumes' {
-                    (GetAutoBitlockerStatus -DriveType 'Fixed' -PrimaryProtector RecoveryPasswordProtector -MinDiskCapacityGB 100|Select-Object -ExpandProperty Keys)|Should -Contain '\\?\Volume{00000000-0000-0000-0000-000000000002}\'
+                    (Get-AutoBitlockerStatus -DriveType 'Fixed' -PrimaryProtector RecoveryPasswordProtector -MinDiskCapacityGB 100|Select-Object -ExpandProperty Keys)|Should -Contain '\\?\Volume{00000000-0000-0000-0000-000000000002}\'
                 }
             }
 
             Context 'When MinDiskCapacity Parameter is Not Defined for Fixed Disks' {
 
                 It 'Should Include E: In The List of Eligible Fixed Volumes' {
-                    (GetAutoBitlockerStatus -DriveType 'Fixed' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Contain 'E:'
+                    (Get-AutoBitlockerStatus -DriveType 'Fixed' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Contain 'E:'
                 }
 
                 It 'Should Include Volume \\?\Volume{00000000-0000-0000-0000-000000000002}\ In The List of Eligible Removable Volumes' {
-                    (GetAutoBitlockerStatus -DriveType 'Fixed' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Contain '\\?\Volume{00000000-0000-0000-0000-000000000002}\'
+                    (Get-AutoBitlockerStatus -DriveType 'Fixed' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Contain '\\?\Volume{00000000-0000-0000-0000-000000000002}\'
                 }
             }
 
             Context 'When MinDiskCapacity Parameter is Defined at 100 GB for Removable Disks' {
 
                 It 'Should Exclude \\?\Volume{00000000-0000-0000-0000-000000000003}\ from The List of Eligible Fixed Volumes' {
-                    (GetAutoBitlockerStatus -DriveType 'Removable' -PrimaryProtector RecoveryPasswordProtector -MinDiskCapacityGB 100|Select-Object -ExpandProperty Keys)|Should -Not -Contain '\\?\Volume{00000000-0000-0000-0000-000000000003}\'
+                    (Get-AutoBitlockerStatus -DriveType 'Removable' -PrimaryProtector RecoveryPasswordProtector -MinDiskCapacityGB 100|Select-Object -ExpandProperty Keys)|Should -Not -Contain '\\?\Volume{00000000-0000-0000-0000-000000000003}\'
                 }
 
                 It 'Should Include F: In The List of Eligible Removable Volumes' {
-                    (GetAutoBitlockerStatus -DriveType 'Removable' -PrimaryProtector RecoveryPasswordProtector -MinDiskCapacityGB 100|Select-Object -ExpandProperty Keys)|Should -Contain 'F:'
+                    (Get-AutoBitlockerStatus -DriveType 'Removable' -PrimaryProtector RecoveryPasswordProtector -MinDiskCapacityGB 100|Select-Object -ExpandProperty Keys)|Should -Contain 'F:'
                 }
             }
 
             Context 'When MinDiskCapacity Parameter is Not Defined for Fixed Disks' {
 
                 It 'Should Include \\?\Volume{00000000-0000-0000-0000-000000000003}\ In The List of Eligible Fixed Volumes' {
-                    (GetAutoBitlockerStatus -DriveType 'Removable' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Contain '\\?\Volume{00000000-0000-0000-0000-000000000003}\'
+                    (Get-AutoBitlockerStatus -DriveType 'Removable' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Contain '\\?\Volume{00000000-0000-0000-0000-000000000003}\'
                 }
 
                 It 'Should Include F: In The List of Eligible Removable Volumes' {
-                    (GetAutoBitlockerStatus -DriveType 'Removable' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Contain 'F:'
+                    (Get-AutoBitlockerStatus -DriveType 'Removable' -PrimaryProtector RecoveryPasswordProtector|Select-Object -ExpandProperty Keys)|Should -Contain 'F:'
                 }
             }
         }

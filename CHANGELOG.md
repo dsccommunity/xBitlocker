@@ -15,6 +15,9 @@
 - Fixed Markdown validation warnings in README.md
 - Added .MetaTestOptIn.json file to root of module
 - Add Integration Tests for module resources
+- Rename functions with improper Verb-Noun constructs
+- Add comment based help to any functions without it
+- Update Schema.mof Description fields
 
 ## 1.2.0.0
 

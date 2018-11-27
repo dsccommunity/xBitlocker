@@ -78,7 +78,7 @@
     .PARAMETER VerbosePreference
         Used to modify the default VerbosePreference for the function.
 #>
-function EnableBitlocker
+function Enable-BitlockerInternal
 {
     # Suppressing this rule because $global:DSCMachineStatus is used to trigger a reboot.
     [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidGlobalVars', '', Scope='Function', Target='DSCMachineStatus')]
@@ -487,31 +487,31 @@ function Add-MissingBitLockerKeyProtector
         $VerbosePreference
     )
 
-    if ($PSBoundParameters.ContainsKey("AdAccountOrGroupProtector") -and $PrimaryProtector -notlike "AdAccountOrGroupProtector" -and !(ContainsKeyProtector -Type "AdAccountOrGroup" -KeyProtectorCollection $blv.KeyProtector))
+    if ($PSBoundParameters.ContainsKey("AdAccountOrGroupProtector") -and $PrimaryProtector -notlike "AdAccountOrGroupProtector" -and !(Test-CollectionContainsKeyProtector -Type "AdAccountOrGroup" -KeyProtectorCollection $blv.KeyProtector))
     {
         Write-Verbose "Adding AdAccountOrGroupProtector"
         Add-BitLockerKeyProtector -MountPoint $MountPoint -AdAccountOrGroupProtector -AdAccountOrGroup $AdAccountOrGroup
     }
 
-    if ($PSBoundParameters.ContainsKey("PasswordProtector") -and $PrimaryProtector -notlike "PasswordProtector" -and !(ContainsKeyProtector -Type "Password" -KeyProtectorCollection $blv.KeyProtector))
+    if ($PSBoundParameters.ContainsKey("PasswordProtector") -and $PrimaryProtector -notlike "PasswordProtector" -and !(Test-CollectionContainsKeyProtector -Type "Password" -KeyProtectorCollection $blv.KeyProtector))
     {
         Write-Verbose "Adding PasswordProtector"
         Add-BitLockerKeyProtector -MountPoint $MountPoint -PasswordProtector -Password $Password.Password
     }
 
-    if ($PSBoundParameters.ContainsKey("RecoveryKeyProtector") -and $PrimaryProtector -notlike "RecoveryKeyProtector" -and !(ContainsKeyProtector -Type "ExternalKey" -KeyProtectorCollection $blv.KeyProtector))
+    if ($PSBoundParameters.ContainsKey("RecoveryKeyProtector") -and $PrimaryProtector -notlike "RecoveryKeyProtector" -and !(Test-CollectionContainsKeyProtector -Type "ExternalKey" -KeyProtectorCollection $blv.KeyProtector))
     {
         Write-Verbose "Adding RecoveryKeyProtector"
         Add-BitLockerKeyProtector -MountPoint $MountPoint -RecoveryKeyProtector -RecoveryKeyPath $RecoveryKeyPath
     }
 
-    if ($PSBoundParameters.ContainsKey("RecoveryPasswordProtector") -and $PrimaryProtector -notlike "RecoveryPasswordProtector" -and !(ContainsKeyProtector -Type "RecoveryPassword" -KeyProtectorCollection $blv.KeyProtector))
+    if ($PSBoundParameters.ContainsKey("RecoveryPasswordProtector") -and $PrimaryProtector -notlike "RecoveryPasswordProtector" -and !(Test-CollectionContainsKeyProtector -Type "RecoveryPassword" -KeyProtectorCollection $blv.KeyProtector))
     {
         Write-Verbose "Adding RecoveryPasswordProtector"
         Add-BitLockerKeyProtector -MountPoint $MountPoint -RecoveryPasswordProtector
     }
 
-    if ($PSBoundParameters.ContainsKey("StartupKeyProtector") -and $PrimaryProtector -notlike "TpmProtector" -and $PrimaryProtector -notlike "StartupKeyProtector" -and !(ContainsKeyProtector -Type "ExternalKey" -KeyProtectorCollection $blv.KeyProtector))
+    if ($PSBoundParameters.ContainsKey("StartupKeyProtector") -and $PrimaryProtector -notlike "TpmProtector" -and $PrimaryProtector -notlike "StartupKeyProtector" -and !(Test-CollectionContainsKeyProtector -Type "ExternalKey" -KeyProtectorCollection $blv.KeyProtector))
     {
         Write-Verbose "Adding StartupKeyProtector"
         Add-BitLockerKeyProtector -MountPoint $MountPoint -StartupKeyProtector -StartupKeyPath $StartupKeyPath
@@ -599,7 +599,7 @@ function Add-MissingBitLockerKeyProtector
     .PARAMETER VerbosePreference
         Used to modify the default VerbosePreference for the function.
 #>
-function TestBitlocker
+function Test-BitlockerEnabled
 {
     [CmdletBinding()]
     [OutputType([System.Boolean])]
@@ -715,31 +715,31 @@ function TestBitlocker
     }
     else
     {
-        if ($PSBoundParameters.ContainsKey("AdAccountOrGroupProtector") -and !(ContainsKeyProtector -Type "AdAccountOrGroup" -KeyProtectorCollection $blv.KeyProtector))
+        if ($PSBoundParameters.ContainsKey("AdAccountOrGroupProtector") -and !(Test-CollectionContainsKeyProtector -Type "AdAccountOrGroup" -KeyProtectorCollection $blv.KeyProtector))
         {
             Write-Verbose "MountPoint '$($MountPoint) 'does not have AdAccountOrGroupProtector (AdAccountOrGroup)"
             return $false
         }
 
-        if ($PSBoundParameters.ContainsKey("PasswordProtector") -and !(ContainsKeyProtector -Type "Password" -KeyProtectorCollection $blv.KeyProtector))
+        if ($PSBoundParameters.ContainsKey("PasswordProtector") -and !(Test-CollectionContainsKeyProtector -Type "Password" -KeyProtectorCollection $blv.KeyProtector))
         {
             Write-Verbose "MountPoint '$($MountPoint) 'does not have PasswordProtector (Password)"
             return $false
         }
 
-        if ($PSBoundParameters.ContainsKey("Pin") -and !(ContainsKeyProtector -Type "TpmPin" -KeyProtectorCollection $blv.KeyProtector -StartsWith $true))
+        if ($PSBoundParameters.ContainsKey("Pin") -and !(Test-CollectionContainsKeyProtector -Type "TpmPin" -KeyProtectorCollection $blv.KeyProtector -StartsWith $true))
         {
             Write-Verbose "MountPoint '$($MountPoint) 'does not have TpmPin assigned."
             return $false
         }
 
-        if ($PSBoundParameters.ContainsKey("RecoveryKeyProtector") -and !(ContainsKeyProtector -Type "ExternalKey" -KeyProtectorCollection $blv.KeyProtector))
+        if ($PSBoundParameters.ContainsKey("RecoveryKeyProtector") -and !(Test-CollectionContainsKeyProtector -Type "ExternalKey" -KeyProtectorCollection $blv.KeyProtector))
         {
             Write-Verbose "MountPoint '$($MountPoint) 'does not have RecoveryKeyProtector (ExternalKey)"
             return $false
         }
 
-        if ($PSBoundParameters.ContainsKey("RecoveryPasswordProtector") -and !(ContainsKeyProtector -Type "RecoveryPassword" -KeyProtectorCollection $blv.KeyProtector))
+        if ($PSBoundParameters.ContainsKey("RecoveryPasswordProtector") -and !(Test-CollectionContainsKeyProtector -Type "RecoveryPassword" -KeyProtectorCollection $blv.KeyProtector))
         {
             Write-Verbose "MountPoint '$($MountPoint) 'does not have RecoveryPasswordProtector (RecoveryPassword)"
             return $false
@@ -749,7 +749,7 @@ function TestBitlocker
         {
             if ($PrimaryProtector -notlike "TpmProtector")
             {
-                if (!(ContainsKeyProtector -Type "ExternalKey" -KeyProtectorCollection $blv.KeyProtector))
+                if (!(Test-CollectionContainsKeyProtector -Type "ExternalKey" -KeyProtectorCollection $blv.KeyProtector))
                 {
                     Write-Verbose "MountPoint '$($MountPoint) 'does not have StartupKeyProtector (ExternalKey)"
                     return $false
@@ -757,7 +757,7 @@ function TestBitlocker
             }
             else #TpmProtector is primary
             {
-                if(!(ContainsKeyProtector -Type "Tpm" -KeyProtectorCollection $blv.KeyProtector -StartsWith $true) -and !(ContainsKeyProtector -Type "StartupKey" -KeyProtectorCollection $blv.KeyProtector -Contains $true))
+                if(!(Test-CollectionContainsKeyProtector -Type "Tpm" -KeyProtectorCollection $blv.KeyProtector -StartsWith $true) -and !(Test-CollectionContainsKeyProtector -Type "StartupKey" -KeyProtectorCollection $blv.KeyProtector -Contains $true))
                 {
                     Write-Verbose "MountPoint '$($MountPoint) 'does not have TPM + StartupKey protector."
                     return $false
@@ -765,7 +765,7 @@ function TestBitlocker
             }
         }
 
-        if ($PSBoundParameters.ContainsKey("TpmProtector") -and !(ContainsKeyProtector -Type "Tpm" -KeyProtectorCollection $blv.KeyProtector -StartsWith $true))
+        if ($PSBoundParameters.ContainsKey("TpmProtector") -and !(Test-CollectionContainsKeyProtector -Type "Tpm" -KeyProtectorCollection $blv.KeyProtector -StartsWith $true))
         {
             Write-Verbose "MountPoint '$($MountPoint) 'does not have TpmProtector"
             return $false
@@ -775,9 +775,16 @@ function TestBitlocker
     return $true
 }
 
-#Ensures that required Bitlocker prereqs are installed
-function CheckForPreReqs
+<#
+    .SYNOPSIS
+        Tests whether the requires prerequisite features for Bitlocker are
+        installed, and throws an exception if they are not.
+#>
+function Assert-HasPrereqsForBitlocker
 {
+    [CmdletBinding()]
+    param()
+
     $hasAllPreReqs = $true
 
     $blFeature = Get-WindowsFeature BitLocker
@@ -811,24 +818,45 @@ function CheckForPreReqs
     }
 }
 
-#Checks whether the KeyProtectorCollection returned from Get-BitlockerVolume contains the specified key protector type
-function ContainsKeyProtector
+<#
+    .SYNOPSIS
+        Tests whether the KeyProtectorCollection returned from
+        Get-BitlockerVolume contains the specified KeyProtector type.
+
+    .PARAMETER Type
+        The KeyProtector type to look for in the KeyProtectorCollection.
+
+    .PARAMETER KeyProtectorCollection
+        The KeyProtectorCollection to look for the KeyProtector type within.
+
+    .PARAMETER StartsWith
+        Whether to look for a KeyProtector type that only StartsWith the input
+        Type.
+
+    .PARAMETER Contains
+        Whether to look for a KeyProtector type that only Contains the input
+        Type.
+#>
+function Test-CollectionContainsKeyProtector
 {
+    [CmdletBinding()]
+    [OutputType([System.Boolean])]
     param
     (
-        [Parameter()]
-        [string]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $Type,
 
         [Parameter()]
+        [System.Object[]]
         $KeyProtectorCollection,
 
         [Parameter()]
-        [bool]
+        [System.Boolean]
         $StartsWith = $false,
 
         [Parameter()]
-        [bool]
+        [System.Boolean]
         $Contains = $false
     )
 
@@ -866,7 +894,7 @@ function ContainsKeyProtector
         A Hashtable containing new Key/Value pairs to add to the given
         PSBoundParametersIn Hashtable.
 #>
-function AddParameters
+function Add-ToPSBoundParametersFromHashtable
 {
     [CmdletBinding()]
     param
@@ -911,7 +939,7 @@ function AddParameters
         A String array containing the list of parameter names to remove in the
         given PSBoundParametersIn HashTable.
 #>
-function RemoveParameters
+function Remove-FromPSBoundParametersUsingHashtable
 {
     [CmdletBinding()]
     param
@@ -952,12 +980,16 @@ function RemoveParameters
 }
 
 <#
-.SYNOPSIS
-Returns the OS edtion we currently running on
+    .SYNOPSIS
+        Returns the OS edition we are currently running on
 #>
 function Get-OSEdition
 {
-    (Get-ItemProperty -Path 'HKLM:/software/microsoft/windows nt/currentversion' -Name InstallationType).InstallationType
+    [CmdletBinding()]
+    [OutputType([System.String])]
+    param()
+
+    return (Get-ItemProperty -Path 'HKLM:/software/microsoft/windows nt/currentversion' -Name InstallationType).InstallationType
 }
 
 Export-ModuleMember -Function *
