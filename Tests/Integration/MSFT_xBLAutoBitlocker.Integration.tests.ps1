@@ -85,11 +85,6 @@ try
             }
 
             It 'Should have set the resource and all the parameters should match' {
-                $resourceCurrentState = $script:currentConfiguration | Where-Object -FilterScript {
-                    $_.ConfigurationName -eq $configurationName `
-                    -and $_.ResourceId -eq "[$($script:dscResourceFriendlyName)]Integration_Test"
-                }
-
                 $fixedDriveBlvs = Get-BitLockerVolume | Where-Object -FilterScript {$_.VolumeType -eq 'Data'}
 
                 foreach ($fixedDriveBlv in $fixedDriveBlvs)

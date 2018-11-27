@@ -208,22 +208,22 @@ function Enable-BitlockerInternal
 
             if ($PSBoundParameters.ContainsKey("HardwareEncryption"))
             {
-                $params.Add("HardwareEncryption", $true)
+                $params.Add("HardwareEncryption", $HardwareEncryption)
             }
 
             if ($PSBoundParameters.ContainsKey("Service"))
             {
-                $params.Add("Service", $true)
+                $params.Add("Service", $Service)
             }
 
             if ($PSBoundParameters.ContainsKey("SkipHardwareTest"))
             {
-                $params.Add("SkipHardwareTest", $true)
+                $params.Add("SkipHardwareTest", $SkipHardwareTest)
             }
 
             if ($PSBoundParameters.ContainsKey("UsedSpaceOnly"))
             {
-                $params.Add("UsedSpaceOnly", $true)
+                $params.Add("UsedSpaceOnly", $UsedSpaceOnly)
             }
 
             #Now add the primary protector

@@ -18,6 +18,8 @@
 - Rename functions with improper Verb-Noun constructs
 - Add comment based help to any functions without it
 - Update Schema.mof Description fields
+- Fixes issue where Switch parameters are passed to Enable-Bitlocker even if
+  the corresponding DSC resource parameter was set to False (Issue #12)
 
 ## 1.2.0.0
 

@@ -42,3 +42,29 @@ function Test-HasPresentTpm
 
     return $hasReadyTpm
 }
+
+<#
+    .SYNOPSIS
+        Disables BitLocker on a test drive, if Enabled
+
+    .PARAMETER MountPoint
+        The MountPoint to disable BitLocker on
+#>
+function Disable-BitLockerOnTestDrive
+{
+    [CmdletBinding()]
+    param
+    (
+        [Parameter(Mandatory = $true)]
+        [ValidateNotNullorEmpty()]
+        [System.String]
+        $MountPoint
+    )
+
+    $blv = Get-BitLockerVolume -MountPoint $MountPoint
+
+    if ($blv.KeyProtector.Count -gt 0 -or $blv.ProtectionStatus -ne 'Off')
+    {
+        Disable-BitLocker -MountPoint $blv
+    }
+}
