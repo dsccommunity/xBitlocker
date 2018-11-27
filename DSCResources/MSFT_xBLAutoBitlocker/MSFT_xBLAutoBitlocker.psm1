@@ -87,7 +87,7 @@ function Get-TargetResource
     param
     (
         [Parameter(Mandatory = $true)]
-        [ValidateSet("Fixed","Removable")]
+        [ValidateSet('Fixed', 'Removable')]
         [System.String]
         $DriveType,
 
@@ -96,7 +96,7 @@ function Get-TargetResource
         $MinDiskCapacityGB,
 
         [Parameter(Mandatory = $true)]
-        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
+        [ValidateSet('PasswordProtector', 'RecoveryPasswordProtector', 'StartupKeyProtector', 'TpmProtector')]
         [System.String]
         $PrimaryProtector,
 
@@ -113,7 +113,7 @@ function Get-TargetResource
         $AutoUnlock = $false,
 
         [Parameter()]
-        [ValidateSet("Aes128","Aes256")]
+        [ValidateSet('Aes128', 'Aes256')]
         [System.String]
         $EncryptionMethod,
 
@@ -170,7 +170,7 @@ function Get-TargetResource
         $UsedSpaceOnly
     )
 
-    #Load helper module
+    # Load helper module
     Import-Module "$((Get-Item -LiteralPath "$($PSScriptRoot)").Parent.Parent.FullName)\Misc\xBitlockerCommon.psm1" -Verbose:0
 
     Assert-HasPrereqsForBitlocker
@@ -270,7 +270,7 @@ function Set-TargetResource
     param
     (
         [Parameter(Mandatory = $true)]
-        [ValidateSet("Fixed","Removable")]
+        [ValidateSet('Fixed', 'Removable')]
         [System.String]
         $DriveType,
 
@@ -279,7 +279,7 @@ function Set-TargetResource
         $MinDiskCapacityGB,
 
         [Parameter(Mandatory = $true)]
-        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
+        [ValidateSet('PasswordProtector', 'RecoveryPasswordProtector', 'StartupKeyProtector', 'TpmProtector')]
         [System.String]
         $PrimaryProtector,
 
@@ -296,7 +296,7 @@ function Set-TargetResource
         $AutoUnlock = $false,
 
         [Parameter()]
-        [ValidateSet("Aes128","Aes256")]
+        [ValidateSet('Aes128', 'Aes256')]
         [System.String]
         $EncryptionMethod,
 
@@ -353,7 +353,7 @@ function Set-TargetResource
         $UsedSpaceOnly
     )
 
-    #Load helper module
+    # Load helper module
     Import-Module "$((Get-Item -LiteralPath "$($PSScriptRoot)").Parent.Parent.FullName)\Misc\xBitlockerCommon.psm1" -Verbose:0
 
     Assert-HasPrereqsForBitlocker
@@ -366,13 +366,13 @@ function Set-TargetResource
     }
     else
     {
-        Remove-FromPSBoundParametersUsingHashtable -PSBoundParametersIn $PSBoundParameters -ParamsToRemove "DriveType","MinDiskCapacityGB"
-        Add-ToPSBoundParametersFromHashtable -PSBoundParametersIn $PSBoundParameters -ParamsToAdd @{"MountPoint" = ""}
+        Remove-FromPSBoundParametersUsingHashtable -PSBoundParametersIn $PSBoundParameters -ParamsToRemove 'DriveType', 'MinDiskCapacityGB'
+        Add-ToPSBoundParametersFromHashtable -PSBoundParametersIn $PSBoundParameters -ParamsToAdd @{'MountPoint' = ''}
 
-        #Loop through each potential AutoBitlocker volume, see whether they are enabled for Bitlocker, and if not, enable it
+        # Loop through each potential AutoBitlocker volume, see whether they are enabled for Bitlocker, and if not, enable it
         foreach ($key in $autoBlVols.Keys)
         {
-            $PSBoundParameters["MountPoint"] = $key
+            $PSBoundParameters['MountPoint'] = $key
 
             $testResult = Test-BitlockerEnabled @PSBoundParameters
 
@@ -474,7 +474,7 @@ function Test-TargetResource
     param
     (
         [Parameter(Mandatory = $true)]
-        [ValidateSet("Fixed","Removable")]
+        [ValidateSet('Fixed', 'Removable')]
         [System.String]
         $DriveType,
 
@@ -483,7 +483,7 @@ function Test-TargetResource
         $MinDiskCapacityGB,
 
         [Parameter(Mandatory = $true)]
-        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
+        [ValidateSet('PasswordProtector', 'RecoveryPasswordProtector', 'StartupKeyProtector', 'TpmProtector')]
         [System.String]
         $PrimaryProtector,
 
@@ -500,7 +500,7 @@ function Test-TargetResource
         $AutoUnlock = $false,
 
         [Parameter()]
-        [ValidateSet("Aes128","Aes256")]
+        [ValidateSet('Aes128', 'Aes256')]
         [System.String]
         $EncryptionMethod,
 
@@ -557,7 +557,7 @@ function Test-TargetResource
         $UsedSpaceOnly
     )
 
-    #Load helper module
+    # Load helper module
     Import-Module "$((Get-Item -LiteralPath "$($PSScriptRoot)").Parent.Parent.FullName)\Misc\xBitlockerCommon.psm1" -Verbose:0
 
     Assert-HasPrereqsForBitlocker
@@ -574,13 +574,13 @@ function Test-TargetResource
     }
     else
     {
-        Remove-FromPSBoundParametersUsingHashtable -PSBoundParametersIn $PSBoundParameters -ParamsToRemove "DriveType","MinDiskCapacityGB"
-        Add-ToPSBoundParametersFromHashtable -PSBoundParametersIn $PSBoundParameters -ParamsToAdd @{"MountPoint" = ""}
+        Remove-FromPSBoundParametersUsingHashtable -PSBoundParametersIn $PSBoundParameters -ParamsToRemove 'DriveType', 'MinDiskCapacityGB'
+        Add-ToPSBoundParametersFromHashtable -PSBoundParametersIn $PSBoundParameters -ParamsToAdd @{'MountPoint' = ''}
 
-        #Check whether any potential AutoBitlocker volume is not currently enabled for Bitlocker, or doesn't have the correct settings
+        # Check whether any potential AutoBitlocker volume is not currently enabled for Bitlocker, or doesn't have the correct settings
         foreach ($key in $autoBlVols.Keys)
         {
-            $PSBoundParameters["MountPoint"] = $key
+            $PSBoundParameters['MountPoint'] = $key
 
             $testResult = Test-BitlockerEnabled @PSBoundParameters -VerbosePreference $VerbosePreference
 
@@ -684,7 +684,7 @@ function Get-AutoBitlockerStatus
     param
     (
         [Parameter(Mandatory = $true)]
-        [ValidateSet("Fixed","Removable")]
+        [ValidateSet('Fixed', 'Removable')]
         [System.String]
         $DriveType,
 
@@ -693,7 +693,7 @@ function Get-AutoBitlockerStatus
         $MinDiskCapacityGB,
 
         [Parameter(Mandatory = $true)]
-        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
+        [ValidateSet('PasswordProtector', 'RecoveryPasswordProtector', 'StartupKeyProtector', 'TpmProtector')]
         [System.String]
         $PrimaryProtector,
 
@@ -710,7 +710,7 @@ function Get-AutoBitlockerStatus
         $AutoUnlock = $false,
 
         [Parameter()]
-        [ValidateSet("Aes128","Aes256")]
+        [ValidateSet('Aes128', 'Aes256')]
         [System.String]
         $EncryptionMethod,
 
@@ -767,19 +767,19 @@ function Get-AutoBitlockerStatus
         $UsedSpaceOnly
     )
 
-    #First get all Bitlocker Volumes of type Data
+    # First get all Bitlocker Volumes of type Data
     $allBlvs = Get-BitLockerVolume | Where-Object -FilterScript {$_.VolumeType -eq 'Data'}
 
-    #Filter on size if it was specified
-    if ($PSBoundParameters.ContainsKey("MinDiskCapacityGB"))
+    # Filter on size if it was specified
+    if ($PSBoundParameters.ContainsKey('MinDiskCapacityGB'))
     {
         $allBlvs = $allBlvs | Where-Object -FilterScript {$_.CapacityGB -ge $MinDiskCapacityGB}
     }
 
-    #Now find disks of the appropriate drive type, and add them to the collection
+    # Now find disks of the appropriate drive type, and add them to the collection
     if ($null -ne $allBlvs)
     {
-        [Hashtable]$returnValue = @{}
+        [Hashtable] $returnValue = @{}
 
         # Convert DriveType into values returned by Win32_EncryptableVolume.VolumeType
         switch ($DriveType)
@@ -813,7 +813,7 @@ function Get-AutoBitlockerStatus
 
             if ($null -ne $vol)
             {
-                [Hashtable]$props = @{
+                [Hashtable] $props = @{
                     VolumeStatus = $blv.VolumeStatus
                     KeyProtectors = $blv.KeyProtector
                     EncryptionMethod = $blv.EncryptionMethod
