@@ -33,14 +33,6 @@ if (!(Test-RequiredFeaturesInstalled))
     return
 }
 
-# Disable Bitlocker on the OS drive before performing any tests
-$sysDriveBlv = Get-BitLockerVolume -MountPoint $env:SystemDrive
-
-if ($sysDriveBlv.KeyProtector.Count -gt 0 -or $sysDriveBlv.ProtectionStatus -ne 'Off')
-{
-    Disable-BitLocker -MountPoint $env:SystemDrive
-}
-
 # Using try/finally to always cleanup.
 try
 {
@@ -49,48 +41,53 @@ try
     . $configurationFile
 
     Describe "$($script:dcsResourceName)_Integration" {
-        $configurationName = "$($script:dcsResourceName)_BasicTPMEncryptionOnSysDrive_Config"
+        $configurationNames = @(
+            "$($script:dcsResourceName)_BasicTPMEncryptionOnSysDrive_Config"
+            "$($script:dcsResourceName)_TPMEncryptionOnSysDriveWithFalseSwitchParams_Config"
+        )
 
-        Context ('When using configuration {0}' -f $configurationName) {
-            It 'Should compile and apply the MOF without throwing' {
-                {
-                    $configurationParameters = @{
-                        OutputPath           = $TestDrive
-                        ConfigurationData    = $ConfigurationData
-                    }
-
-                    & $configurationName @configurationParameters
-
-                    $startDscConfigurationParameters = @{
-                        Path         = $TestDrive
-                        ComputerName = 'localhost'
-                        Wait         = $true
-                        Verbose      = $true
-                        Force        = $true
-                        ErrorAction  = 'Stop'
-                    }
-
-                    Start-DscConfiguration @startDscConfigurationParameters
-                } | Should -Not -Throw
-            }
-
-            It 'Should be able to call Get-DscConfiguration without throwing' {
-                {
-                    $script:currentConfiguration = Get-DscConfiguration -Verbose -ErrorAction Stop
-                } | Should -Not -Throw
-            }
-
-            It 'Should have set the resource and all the parameters should match' {
-                $resourceCurrentState = $script:currentConfiguration | Where-Object -FilterScript {
-                    $_.ConfigurationName -eq $configurationName `
-                    -and $_.ResourceId -eq "[$($script:dscResourceFriendlyName)]Integration_Test"
+        foreach ($configurationName in $configurationNames)
+        {
+            Context ('When using configuration {0}' -f $configurationName) {
+                BeforeAll {
+                    Disable-BitLockerOnTestDrive -MountPoint $env:SystemDrive
                 }
 
-                (Get-BitlockerVolume -MountPoint $env:SystemDrive).KeyProtector[0].KeyProtectorType | Should -Be 'Tpm'
-            }
+                It 'Should compile and apply the MOF without throwing' {
+                    {
+                        $configurationParameters = @{
+                            OutputPath           = $TestDrive
+                            ConfigurationData    = $ConfigurationData
+                        }
 
-            It 'Should return $true when Test-DscConfiguration is run' {
-                Test-DscConfiguration -Verbose | Should -Be $true
+                        & $configurationName @configurationParameters
+
+                        $startDscConfigurationParameters = @{
+                            Path         = $TestDrive
+                            ComputerName = 'localhost'
+                            Wait         = $true
+                            Verbose      = $true
+                            Force        = $true
+                            ErrorAction  = 'Stop'
+                        }
+
+                        Start-DscConfiguration @startDscConfigurationParameters
+                    } | Should -Not -Throw
+                }
+
+                It 'Should be able to call Get-DscConfiguration without throwing' {
+                    {
+                        $script:currentConfiguration = Get-DscConfiguration -Verbose -ErrorAction Stop
+                    } | Should -Not -Throw
+                }
+
+                It 'Should have set the resource and all the parameters should match' {
+                    (Get-BitlockerVolume -MountPoint $env:SystemDrive).KeyProtector[0].KeyProtectorType | Should -Be 'Tpm'
+                }
+
+                It 'Should return $true when Test-DscConfiguration is run' {
+                    Test-DscConfiguration -Verbose | Should -Be $true
+                }
             }
         }
     }
