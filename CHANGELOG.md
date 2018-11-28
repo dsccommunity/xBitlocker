@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 1.3.0.0
+
 - Update appveyor.yml to use the default template.
 - Added default template files .gitattributes, and .vscode settings.
 - Fixes most PSScriptAnalyzer issues.

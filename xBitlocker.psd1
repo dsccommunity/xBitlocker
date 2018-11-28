@@ -6,7 +6,7 @@
 # RootModule = ''
 
 # Version number of this module.
-moduleVersion = '1.2.0.0'
+moduleVersion = '1.3.0.0'
 
 # ID used to uniquely identify this module
 GUID = 'dc4f3fd0-4e1d-4916-84f8-d0bb89d52507'
@@ -95,21 +95,24 @@ PrivateData = @{
         # IconUri = ''
 
         # ReleaseNotes of this module
-        ReleaseNotes = '* Converted appveyor.yml to install Pester from PSGallery instead of from Chocolatey.
-* Added Codecov support.
-* Updated appveyor.yml to use the one in template.
-* Added folders for future unit and integration tests.
-* Added Visual Studio Code formatting settings.
-* Added .gitignore file.
-* Added markdown lint rules.
-* Fixed encoding on README.md.
-* Added `PowerShellVersion = "4.0"`, and updated copyright information, in the
-  module manifest.
-* Fixed issue which caused Test to incorrectly succeed on fully decrypted volumes when correct Key Protectors were present ([issue 13](https://github.com/PowerShell/xBitlocker/issues/13))
-* Fixed issue which caused xBLAutoBitlocker to incorrectly detect Fixed vs Removable volumes. ([issue 11](https://github.com/PowerShell/xBitlocker/issues/11))
-* Fixed issue which made xBLAutoBitlocker unable to encrypt volumes with drive letters assigned. ([issue 10](https://github.com/PowerShell/xBitlocker/issues/10))
-* Fixed an issue in CheckForPreReqs function where on Server Core the installation of the non existing Windows Feature "RSAT-Feature-Tools-BitLocker-RemoteAdminTool" was erroneously checked. ([issue 8](https://github.com/PowerShell/xBitlocker/issues/8))
-
+        ReleaseNotes = '- Update appveyor.yml to use the default template.
+- Added default template files .gitattributes, and .vscode settings.
+- Fixes most PSScriptAnalyzer issues.
+- Fix issue where AutoUnlock is not set if requested, if the disk was
+  originally encrypted and AutoUnlock was not used.
+- Add remaining Unit Tests for xBitlockerCommon.
+- Add Unit tests for MSFT_xBLTpm
+- Add remaining Unit Tests for xBLAutoBitlocker
+- Add Unit tests for MSFT_xBLBitlocker
+- Moved change log to CHANGELOG.md file
+- Fixed Markdown validation warnings in README.md
+- Added .MetaTestOptIn.json file to root of module
+- Add Integration Tests for module resources
+- Rename functions with improper Verb-Noun constructs
+- Add comment based help to any functions without it
+- Update Schema.mof Description fields
+- Fixes issue where Switch parameters are passed to Enable-Bitlocker even if
+  the corresponding DSC resource parameter was set to False (Issue 12)
 
 '
 
@@ -124,6 +127,7 @@ PrivateData = @{
 # DefaultCommandPrefix = ''
 
 }
+
 
 
 
