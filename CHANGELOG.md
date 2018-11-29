@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Change double quoted string literals to single quotes
+- Add spaces between array members
+- Add spaces between variable types and variable names
+- Add spaces between comment hashtag and comments
+
 ## 1.3.0.0
 
 - Update appveyor.yml to use the default template.
@@ -22,10 +27,6 @@
 - Update Schema.mof Description fields
 - Fixes issue where Switch parameters are passed to Enable-Bitlocker even if
   the corresponding DSC resource parameter was set to False (Issue #12)
-- Change double quoted string literals to single quotes
-- Add spaces between array members
-- Add spaces between variable types and variable names
-- Add spaces between comment hashtag and comments
 
 ## 1.2.0.0
 
