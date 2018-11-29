@@ -1,11 +1,11 @@
 Configuration ConfigureBitlockerOnOSDrive
 {
-    Import-DscResource –ModuleName PSDesiredStateConfiguration
+    Import-DscResource -ModuleName PSDesiredStateConfiguration
     Import-DscResource -ModuleName xBitlocker
 
-    Node "E15-1"
+    Node 'localhost'
     {
-        #First install the required Bitlocker features
+        # First install the required Bitlocker features
         WindowsFeature BitlockerFeature
         {
             Name                 = 'Bitlocker'
@@ -20,7 +20,7 @@ Configuration ConfigureBitlockerOnOSDrive
             IncludeAllSubFeature = $true
         }
 
-        #This example enables Bitlocker on the Operating System drive using both a RecoveryPasswordProtector and a StartupKeyProtector
+        # This example enables Bitlocker on the Operating System drive using both a RecoveryPasswordProtector and a StartupKeyProtector
         xBLBitlocker Bitlocker
         {
             MountPoint                = 'C:'
@@ -31,11 +31,9 @@ Configuration ConfigureBitlockerOnOSDrive
             AllowImmediateReboot      = $true
             UsedSpaceOnly             = $true
 
-            DependsOn                 = '[WindowsFeature]BitlockerFeature','[WindowsFeature]BitlockerToolsFeature'
+            DependsOn                 = '[WindowsFeature]BitlockerFeature', '[WindowsFeature]BitlockerToolsFeature'
         }
     }
 }
 
 ConfigureBitlockerOnOSDrive
-
-#Start-DscConfiguration -Verbose -Wait -Path .\ConfigureBitlockerOnOSDrive -ComputerName "E15-1"

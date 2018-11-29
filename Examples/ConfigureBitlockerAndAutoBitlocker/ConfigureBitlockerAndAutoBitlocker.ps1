@@ -1,11 +1,11 @@
 Configuration ConfigureBitlockerAndAutoBitlocker
 {
-    Import-DscResource –ModuleName PSDesiredStateConfiguration
+    Import-DscResource -ModuleName PSDesiredStateConfiguration
     Import-DscResource -ModuleName xBitlocker
 
-    Node 'E15-1'
+    Node 'localhost'
     {
-        #First install the required Bitlocker features
+        # First install the required Bitlocker features
         WindowsFeature BitlockerFeature
         {
             Name                 = 'Bitlocker'
@@ -20,7 +20,7 @@ Configuration ConfigureBitlockerAndAutoBitlocker
             IncludeAllSubFeature = $true
         }
 
-        #This example enables Bitlocker on the Operating System drive using both a RecoveryPasswordProtector and a StartupKeyProtector
+        # This example enables Bitlocker on the Operating System drive using both a RecoveryPasswordProtector and a StartupKeyProtector
         xBLBitlocker Bitlocker
         {
             MountPoint                = 'C:'
@@ -31,22 +31,20 @@ Configuration ConfigureBitlockerAndAutoBitlocker
             AllowImmediateReboot      = $true
             UsedSpaceOnly             = $true
 
-            DependsOn                 = '[WindowsFeature]BitlockerFeature','[WindowsFeature]BitlockerToolsFeature'
+            DependsOn                 = '[WindowsFeature]BitlockerFeature', '[WindowsFeature]BitlockerToolsFeature'
         }
 
-        #This example sets up AutoBitlocker for any drive of type Fixed with a RecoveryPasswordProtector only.
+        # This example sets up AutoBitlocker for any drive of type Fixed with a RecoveryPasswordProtector only.
         xBLAutoBitlocker AutoBitlocker
         {
             DriveType                 = 'Fixed'
             PrimaryProtector          = 'RecoveryPasswordProtector'
             RecoveryPasswordProtector = $true
             UsedSpaceOnly             = $true
-
-            DependsOn                 = '[xBLBitlocker]Bitlocker' #Don't enable AutoBL until the OS drive has been encrypted
+            # Don't enable AutoBL until the OS drive has been encrypted
+            DependsOn                 = '[xBLBitlocker]Bitlocker'
         }
     }
 }
 
 ConfigureBitlockerAndAutoBitlocker
-
-#Start-DscConfiguration -Verbose -Wait -Path .\ConfigureBitlockerAndAutoBitlocker -ComputerName "E15-1"
