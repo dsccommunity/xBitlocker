@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 1.4.0.0
+
 - Change double quoted string literals to single quotes
 - Add spaces between array members
 - Add spaces between variable types and variable names
