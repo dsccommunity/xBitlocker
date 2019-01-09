@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## 1.4.0.0
+
+- Change double quoted string literals to single quotes
+- Add spaces between array members
+- Add spaces between variable types and variable names
+- Add spaces between comment hashtag and comments
+- Explicitly removed extra hidden files from release package
+
 ## 1.3.0.0
 
 - Update appveyor.yml to use the default template.

@@ -87,7 +87,7 @@ function Get-TargetResource
         $MountPoint,
 
         [Parameter(Mandatory = $true)]
-        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
+        [ValidateSet('PasswordProtector', 'RecoveryPasswordProtector', 'StartupKeyProtector', 'TpmProtector')]
         [System.String]
         $PrimaryProtector,
 
@@ -108,7 +108,7 @@ function Get-TargetResource
         $AutoUnlock = $false,
 
         [Parameter()]
-        [ValidateSet("Aes128","Aes256")]
+        [ValidateSet('Aes128', 'Aes256')]
         [System.String]
         $EncryptionMethod,
 
@@ -165,7 +165,7 @@ function Get-TargetResource
         $UsedSpaceOnly
     )
 
-    #Load helper module
+    # Load helper module
     Import-Module "$((Get-Item -LiteralPath "$($PSScriptRoot)").Parent.Parent.FullName)\Misc\xBitlockerCommon.psm1" -Verbose:0
 
     Assert-HasPrereqsForBitlocker
@@ -265,7 +265,7 @@ function Set-TargetResource
         $MountPoint,
 
         [Parameter(Mandatory = $true)]
-        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
+        [ValidateSet('PasswordProtector', 'RecoveryPasswordProtector', 'StartupKeyProtector', 'TpmProtector')]
         [System.String]
         $PrimaryProtector,
 
@@ -286,7 +286,7 @@ function Set-TargetResource
         $AutoUnlock = $false,
 
         [Parameter()]
-        [ValidateSet("Aes128","Aes256")]
+        [ValidateSet('Aes128', 'Aes256')]
         [System.String]
         $EncryptionMethod,
 
@@ -343,7 +343,7 @@ function Set-TargetResource
         $UsedSpaceOnly
     )
 
-    #Load helper module
+    # Load helper module
     Import-Module "$((Get-Item -LiteralPath "$($PSScriptRoot)").Parent.Parent.FullName)\Misc\xBitlockerCommon.psm1" -Verbose:0
 
     Assert-HasPrereqsForBitlocker
@@ -441,7 +441,7 @@ function Test-TargetResource
         $MountPoint,
 
         [Parameter(Mandatory = $true)]
-        [ValidateSet("PasswordProtector","RecoveryPasswordProtector","StartupKeyProtector","TpmProtector")]
+        [ValidateSet('PasswordProtector', 'RecoveryPasswordProtector', 'StartupKeyProtector', 'TpmProtector')]
         [System.String]
         $PrimaryProtector,
 
@@ -462,7 +462,7 @@ function Test-TargetResource
         $AutoUnlock = $false,
 
         [Parameter()]
-        [ValidateSet("Aes128","Aes256")]
+        [ValidateSet('Aes128', 'Aes256')]
         [System.String]
         $EncryptionMethod,
 
@@ -519,7 +519,7 @@ function Test-TargetResource
         $UsedSpaceOnly
     )
 
-    #Load helper module
+    # Load helper module
     Import-Module "$((Get-Item -LiteralPath "$($PSScriptRoot)").Parent.Parent.FullName)\Misc\xBitlockerCommon.psm1" -Verbose:0
 
     Assert-HasPrereqsForBitlocker

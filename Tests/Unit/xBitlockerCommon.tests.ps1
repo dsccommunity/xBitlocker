@@ -392,7 +392,7 @@ try
         Describe 'xBitLockerCommon\Get-OSEdition' {
             It 'Should return "Server Core" if the OS is Windows Server Core' {
                 Mock -CommandName Get-ItemProperty -MockWith {
-                    [PSCustomObject]@{
+                    [PSCustomObject] @{
                         InstallationType = 'Server Core'
                         PSPath           = 'Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\software\microsoft\windows nt\currentversion'
                         PSParentPath     = 'Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\software\microsoft\windows nt'
@@ -408,7 +408,7 @@ try
 
             It 'Should return "Server" if the OS is Full Windows Server' {
                 Mock -CommandName Get-ItemProperty -MockWith {
-                    [PSCustomObject]@{
+                    [PSCustomObject] @{
                         InstallationType = 'Server'
                         PSPath           = 'Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\software\microsoft\windows nt\currentversion'
                         PSParentPath     = 'Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\software\microsoft\windows nt'
@@ -424,7 +424,7 @@ try
 
             It 'Should run without exceptions' {
                 Mock -CommandName Get-ItemProperty -MockWith {
-                    [PSCustomObject]@{
+                    [PSCustomObject] @{
                         InstallationType = 'Some other os'
                         PSPath           = 'Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\software\microsoft\windows nt\currentversion'
                         PSParentPath     = 'Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\software\microsoft\windows nt'

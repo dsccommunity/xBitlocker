@@ -6,7 +6,7 @@
 # RootModule = ''
 
 # Version number of this module.
-moduleVersion = '1.3.0.0'
+moduleVersion = '1.4.0.0'
 
 # ID used to uniquely identify this module
 GUID = 'dc4f3fd0-4e1d-4916-84f8-d0bb89d52507'
@@ -95,24 +95,11 @@ PrivateData = @{
         # IconUri = ''
 
         # ReleaseNotes of this module
-        ReleaseNotes = '- Update appveyor.yml to use the default template.
-- Added default template files .gitattributes, and .vscode settings.
-- Fixes most PSScriptAnalyzer issues.
-- Fix issue where AutoUnlock is not set if requested, if the disk was
-  originally encrypted and AutoUnlock was not used.
-- Add remaining Unit Tests for xBitlockerCommon.
-- Add Unit tests for MSFT_xBLTpm
-- Add remaining Unit Tests for xBLAutoBitlocker
-- Add Unit tests for MSFT_xBLBitlocker
-- Moved change log to CHANGELOG.md file
-- Fixed Markdown validation warnings in README.md
-- Added .MetaTestOptIn.json file to root of module
-- Add Integration Tests for module resources
-- Rename functions with improper Verb-Noun constructs
-- Add comment based help to any functions without it
-- Update Schema.mof Description fields
-- Fixes issue where Switch parameters are passed to Enable-Bitlocker even if
-  the corresponding DSC resource parameter was set to False (Issue 12)
+        ReleaseNotes = '- Change double quoted string literals to single quotes
+- Add spaces between array members
+- Add spaces between variable types and variable names
+- Add spaces between comment hashtag and comments
+- Explicitly removed extra hidden files from release package
 
 '
 
@@ -127,6 +114,7 @@ PrivateData = @{
 # DefaultCommandPrefix = ''
 
 }
+
 
 
 
