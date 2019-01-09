@@ -6,6 +6,7 @@
 - Add spaces between array members
 - Add spaces between variable types and variable names
 - Add spaces between comment hashtag and comments
+- Explicitly removed extra hidden files from release package
 
 ## 1.3.0.0
 
